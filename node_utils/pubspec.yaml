@@ -1,0 +1,44 @@
+name: tekartik_app_node_utils
+description: Node utilities.
+# version: 1.0.0
+# homepage: https://www.example.com
+
+environment:
+  sdk: '>=2.8.1 <3.0.0'
+
+dependencies:
+  path: ^1.7.0
+  tekartik_browser_utils:
+    git:
+      url: git://github.com/tekartik/browser_utils.dart
+      ref: dart2
+    version: '>=0.6.10'
+  tekartik_platform:
+    git:
+      url: git://github.com/tekartik/platform.dart
+      path: platform
+      ref: dart2
+    version: '>=0.2.1'
+  tekartik_platform_node:
+    git:
+      url: git://github.com/tekartik/platform.dart
+      path: platform_node
+      ref: dart2
+    version: '>=0.2.1'
+  tekartik_platform_io:
+    git:
+      url: git://github.com/tekartik/platform.dart
+      path: platform_io
+      ref: dart2
+    version: '>=0.2.1'
+  tekartik_js_utils:
+    path: ../../js_utils.dart/js_utils
+
+dev_dependencies:
+  pedantic: ^1.9.0
+  test: ^1.14.4
+  tekartik_app_node_build:
+    path: ../app_build
+  # Needed direct dependencies
+  build_runner:
+  build_node_compilers:
