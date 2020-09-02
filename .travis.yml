@@ -1,0 +1,15 @@
+language: dart
+dart:
+  - stable
+  - beta
+  - dev
+sudo: required
+addons:
+  chrome: stable
+
+script:
+  - dart tool/travis.dart
+
+cache:
+  directories:
+    - $HOME/.pub-cache
