@@ -50,7 +50,7 @@ Future nodeTestCheck() async {
   }
 }
 
-Future nodeRunTest({String directory = 'bin'}) async {
+Future nodeRunTest() async {
   await nodeCheck();
   await nodeTestCheck();
   var shell = Shell();

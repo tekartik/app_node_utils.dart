@@ -9,6 +9,14 @@ Created from templates made available by Stagehand under a BSD-style
 
 Dependencies:
 ```yaml
+dev_dependencies:
+  tekartik_app_node_build:
+    git:
+      url: git://github.com/tekartik/app_node_utils.dart
+      path: app_build
+      ref: dart2
+    version: '>=0.1.0'
+
   # Needed direct dependencies
   build_runner:
   build_node_compilers:

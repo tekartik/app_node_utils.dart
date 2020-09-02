@@ -8,11 +8,6 @@ environment:
 
 dependencies:
   path: ^1.7.0
-  tekartik_browser_utils:
-    git:
-      url: git://github.com/tekartik/browser_utils.dart
-      ref: dart2
-    version: '>=0.6.10'
   tekartik_platform:
     git:
       url: git://github.com/tekartik/platform.dart
@@ -32,7 +27,11 @@ dependencies:
       ref: dart2
     version: '>=0.2.1'
   tekartik_js_utils:
-    path: ../../js_utils.dart/js_utils
+    git:
+      url: git://github.com/tekartik/js_utils.dart
+      path: js_utils
+      ref: dart2
+    version: '>=0.1.1'
 
 dev_dependencies:
   pedantic: ^1.9.0
