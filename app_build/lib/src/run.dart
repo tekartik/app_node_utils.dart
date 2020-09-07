@@ -1,15 +1,18 @@
+// Duplicate to dev_test
+// This is the reference code
 import 'dart:io';
 
 import 'package:process_run/shell_run.dart';
 
 import 'copy_to_deploy.dart';
+import 'node_support.dart';
 
 bool _checked = false;
 
 Future nodeCheck() async {
   if (!_checked) {
     _checked = true;
-    if (!(await File('build.yaml').exists())) {
+    if (!(File('build.yaml').existsSync())) {
       stderr.writeln('Missing \'build.yaml\'');
     }
   }
@@ -37,22 +40,9 @@ node deploy/index.js
   ''');
 }
 
-bool _testChecked = false;
-
-Future nodeTestCheck() async {
-  if (!_testChecked) {
-    _testChecked = true;
-    if ((await File('package.json').exists())) {
-      if (!(await Directory('node_modules').exists())) {
-        await run('npm install');
-      }
-    }
-  }
-}
-
 Future nodeRunTest() async {
   await nodeCheck();
-  await nodeTestCheck();
+  await nodeTestCheck('.');
   var shell = Shell();
   await shell.run('pub run test -p node');
 }

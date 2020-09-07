@@ -5,33 +5,11 @@ Created from templates made available by Stagehand under a BSD-style
 
 ## Setup
 
-## Pure node project
+- See [setup](doc/setup.md)
+- See [setup node only](doc/setup_node_only.md)
 
-Dependencies:
-```yaml
-dev_dependencies:
-  tekartik_app_node_build:
-    git:
-      url: git://github.com/tekartik/app_node_utils.dart
-      path: app_build
-      ref: dart2
-    version: '>=0.1.0'
+## Run test
 
-  # Needed direct dependencies
-  build_runner:
-  build_node_compilers:
+```dart
+await nodePackageRunCi('.');
 ```
-
-Create a dart_test.yaml:
-```yaml
-# This package's tests are very slow. Double the default timeout.
-timeout: 2x
-
-# This is a node-only package, so test on node.
-platforms: [node]
-```
-## Features and bugs
-
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: http://example.com/issues/replaceme
