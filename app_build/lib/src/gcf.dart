@@ -8,10 +8,14 @@ import 'package:tekartik_app_node_build/src/run.dart';
 /// Compile bin/main.dart to deploy/functions/index.js
 Future gcfNodeBuildAndServe(
     {String directory = 'bin', String deployDirectory = 'deploy'}) async {
+  await gcfNodeServe(directory: deployDirectory);
+}
+
+Future gcfNodeBuild(
+    {String directory = 'bin', String deployDirectory = 'deploy'}) async {
   await nodeBuild(directory: directory);
   await gcfNodeCopyToDeploy(
       directory: directory, deployDirectory: deployDirectory);
-  await gcfNodeServe(directory: deployDirectory);
 }
 
 Future gcfNodeServe({String directory = 'deploy'}) async {
