@@ -43,3 +43,11 @@
             options:
               compiler: dart2js
     ```
+  
+- In `analysis_options.yaml` add
+
+    ```yaml
+    analyzer:
+      exclude:
+        - build/**
+    ```
