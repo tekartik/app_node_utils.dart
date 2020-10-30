@@ -24,6 +24,11 @@ Future gcfNodeServe({String directory = 'deploy'}) async {
   await shell.run('firebase serve');
 }
 
+Future gcfNodeCreate({String directory = 'deploy'}) async {
+  var shell = Shell(workingDirectory: directory);
+  await shell.run('firebase serve');
+}
+
 /// Convert main.dart to index.js
 Future gcfNodeCopyToDeploy(
     {String directory = 'bin', String deployDirectory = 'deploy'}) async {
