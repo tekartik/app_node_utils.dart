@@ -1,8 +1,17 @@
-A library for Dart developers.
+# Setup
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+## Pure node project
 
+Dependencies:
+```yaml
+dependencies:
+  tekartik_app_node_utils:
+    git:
+      url: git://github.com/tekartik/app_node_utils.dart
+      path: node_utils
+      ref: dart2
+    version: '>=0.1.0'
+```
 ## Usage
 
 A simple usage example:

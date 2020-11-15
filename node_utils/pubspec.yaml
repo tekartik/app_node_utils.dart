@@ -1,6 +1,7 @@
 name: tekartik_app_node_utils
 description: Node utilities.
-# version: 1.0.0
+version: 0.1.1
+publish_to: none
 # homepage: https://www.example.com
 
 environment:
