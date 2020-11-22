@@ -1,6 +1,6 @@
 name: tekartik_app_node_build
 description: Node build dependencies
-version: 0.2.4
+version: 0.2.5
 publish_to: none
 deploy_to: none
 
@@ -18,11 +18,13 @@ dependencies:
 
   pedantic: ^1.9.0
   test: ^1.14.4
+  process_run: '>=0.11.0+2'
+  dev_test: '>=0.13.3-dev.3'
+
+dev_dependencies:
   build_runner:
   build_node_compilers:
   build_test:
-  process_run: '>=0.11.0+2'
-  dev_test: '>=0.13.3-dev.3'
 
 dependency_overrides:
   tekartik_app_node_utils:
