@@ -8,6 +8,8 @@ addons:
   chrome: stable
 
 script:
+  - cd repo_support
+  - dart pub get
   - dart tool/travis.dart
 
 cache:

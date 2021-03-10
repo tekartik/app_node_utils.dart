@@ -1,0 +1,16 @@
+name: app_node_utils_repo_support
+description: Mustache repo (tools)
+version: 0.2.0
+publish_to: none
+
+environment:
+  sdk: '>=2.10.0-0 <3.0.0'
+
+dev_dependencies:
+  dev_test: '>=0.13.0'
+  pedantic:
+  path:
+  pub_semver:
+  process_run:
+
+
