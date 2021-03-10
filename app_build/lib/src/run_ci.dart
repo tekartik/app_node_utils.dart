@@ -70,6 +70,7 @@ class NodePackageRunCiOptions {
 /// ```
 /// ```
 Future nodePackageRunCi(String path, [NodePackageRunCiOptions options]) async {
+  print('# package: $path');
   var shell = Shell(workingDirectory: path);
 
   var pubspecMap = await pathGetPubspecYamlMap(path);
