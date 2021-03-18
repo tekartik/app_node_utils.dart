@@ -1,15 +1,16 @@
 language: dart
+sudo: required
 dart:
   - stable
   - beta
   - dev
-sudo: required
 addons:
   chrome: stable
-
+before_script:
+  - cd repo_support
 script:
-  - dart tool/travis.dart
-
-cache:
-  directories:
-    - $HOME/.pub-cache
+  - dart pub get
+  - dart run tool/travis.dart
+matrix:
+  allow_failures:
+    - dart: dev
