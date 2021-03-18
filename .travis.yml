@@ -6,11 +6,16 @@ dart:
   - dev
 addons:
   chrome: stable
+
+before_install:
+  - nvm install node
+  - node --version
+
 before_script:
   - cd repo_support
 script:
   - dart pub get
-  - dart run tool/travis.dart
+  - dart run tool/run_ci.dart
 matrix:
   allow_failures:
     - dart: dev
