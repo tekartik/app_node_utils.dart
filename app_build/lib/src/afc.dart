@@ -24,7 +24,7 @@ Future afcNodeCopyToDeploy(
   var src = File('build/$directory/main.dart.js');
   Future copy() async {
     var file = await src.copy('$deployDirectory/index.js');
-    print('copied to ${file} ${file.statSync()}');
+    print('copied to $file ${file.statSync()}');
   }
 
   try {
@@ -37,7 +37,7 @@ Future afcNodeCopyToDeploy(
 
 class AfcDeployResult {
   // Function url
-  final String url;
+  final String? url;
 
   AfcDeployResult._({this.url});
 }
@@ -47,7 +47,7 @@ Future<AfcDeployResult> afcNodeDeploy(
     {String deployDirectory = 'deploy'}) async {
   var shell = Shell(workingDirectory: 'deploy');
   var lines = (await shell.run('fun deploy')).outLines;
-  String foundUrl;
+  String? foundUrl;
   // Extract from 'url: https://xxxxx.eu-central-1.fc.aliyuncs.com/xxxxxx/'
   for (var line in lines) {
     var text = line.trim();

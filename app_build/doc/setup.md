@@ -10,7 +10,7 @@
         git:
           url: git://github.com/tekartik/app_node_utils.dart
           path: app_build
-          ref: dart2
+          ref: null_safety
         version: '>=0.1.0'
     
       # Needed direct dependencies
