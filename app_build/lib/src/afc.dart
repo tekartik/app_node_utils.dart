@@ -24,7 +24,7 @@ Future afcNodeCopyToDeploy(
   var src = File('build/$directory/main.dart.js');
   Future copy() async {
     var file = await src.copy('$deployDirectory/index.js');
-    print('copied to ${file} ${file.statSync()}');
+    print('copied to $file ${file.statSync()}');
   }
 
   try {
