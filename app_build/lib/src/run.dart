@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:process_run/shell_run.dart';
+import 'package:tekartik_build_node/build_node.dart' as build;
 
 import 'copy_to_deploy.dart';
 import 'node_support.dart';
@@ -20,11 +21,7 @@ Future nodeCheck() async {
 
 Future nodeBuild({String directory = 'bin'}) async {
   await nodeCheck();
-  var shell = Shell();
-  await shell.run('''
-# pub run build_runner build --output=$directory:build/$directory -- -p node
-pub run build_runner build --output=build/ -- -p node
-''');
+  await build.nodeBuild(directory: directory);
 }
 
 Future nodeBuildAndRun({String directory = 'bin'}) async {
