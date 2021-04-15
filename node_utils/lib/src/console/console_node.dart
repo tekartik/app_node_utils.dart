@@ -19,7 +19,7 @@ external void _consoleLog(object);
 
 class _ConsoleErrorSink extends _ConsoleSink {
   @override
-  void writeln([Object obj = '']) {
+  void writeln([Object? obj = '']) {
     // devPrint('err.writeln($obj)');
     _consoleError(obj);
   }
@@ -27,7 +27,7 @@ class _ConsoleErrorSink extends _ConsoleSink {
 
 class _ConsoleOutSink extends _ConsoleSink {
   @override
-  void writeln([Object obj = '']) {
+  void writeln([Object? obj = '']) {
     // devPrint('out.writeln($obj)');
     _consoleLog(obj);
   }
@@ -45,7 +45,7 @@ abstract class _ConsoleSink implements ConsoleSink {
   }
 
   @override
-  void write(Object obj) {
+  void write(Object? obj) {
     // TODO: implement write
   }
 
