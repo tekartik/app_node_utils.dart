@@ -24,6 +24,12 @@ Future nodeBuild({String directory = 'bin'}) async {
   await build.nodeBuild(directory: directory);
 }
 
+/*
+Future nodePackageBuild({String directory = 'bin'}) async {
+  await nodeCheck();
+  await build.nodeBuild(directory: directory);
+}*/
+
 Future nodeBuildAndRun({String directory = 'bin'}) async {
   await nodeBuild(directory: directory);
   await nodeCopyToDeploy(directory: directory);
