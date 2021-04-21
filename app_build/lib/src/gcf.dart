@@ -28,7 +28,7 @@ Future gcfNodeBuild(
 Future gcfNodePackageBuild(String path,
     {String directory = 'bin', String deployDirectory = 'deploy'}) async {
   await nodePackageBuild(path, directory: directory);
-  await gcfNodeCopyToDeploy(
+  await gcfNodePackageCopyToDeploy(path,
       directory: directory, deployDirectory: deployDirectory);
 }
 
