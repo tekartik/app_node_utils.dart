@@ -2,8 +2,8 @@
 import 'dart:io';
 
 import 'package:process_run/shell_run.dart';
-import 'package:tekartik_app_node_build/src/run.dart';
 import 'package:process_run/utils/process_result_extension.dart';
+import 'package:tekartik_app_node_build/src/run.dart';
 
 /// Compile bin/main.dart to deploy/functions/index.js
 Future afcNodeBuild(
@@ -37,7 +37,7 @@ Future afcNodeCopyToDeploy(
 
 class AfcDeployResult {
   // Function url
-  final String url;
+  final String? url;
 
   AfcDeployResult._({this.url});
 }
@@ -47,7 +47,7 @@ Future<AfcDeployResult> afcNodeDeploy(
     {String deployDirectory = 'deploy'}) async {
   var shell = Shell(workingDirectory: 'deploy');
   var lines = (await shell.run('fun deploy')).outLines;
-  String foundUrl;
+  String? foundUrl;
   // Extract from 'url: https://xxxxx.eu-central-1.fc.aliyuncs.com/xxxxxx/'
   for (var line in lines) {
     var text = line.trim();

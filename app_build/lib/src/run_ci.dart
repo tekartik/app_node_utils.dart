@@ -9,13 +9,18 @@ import 'import.dart';
 import 'node_support.dart' as node_support;
 
 Future<bool> _isPubPackageRoot(String dir) async {
-  return (await pathGetPubspecYamlMap(dir) != null);
+  try {
+    await pathGetPubspecYamlMap(dir);
+    return true;
+  } catch (_) {
+    return false;
+  }
 }
 
 Future main(List<String> arguments) async {
-  String path;
-  if (arguments.isNotEmpty ?? false) {
-    var firstArg = arguments.first?.toString();
+  String? path;
+  if (arguments.isNotEmpty) {
+    var firstArg = arguments.first.toString();
     if (await _isPubPackageRoot(firstArg)) {
       path = firstArg;
     }
@@ -48,12 +53,12 @@ List<String> filterDartDirs(List<String> dirs) => dirs.where((element) {
 
 /// Package run options
 class NodePackageRunCiOptions {
-  final bool noNodeTest;
-  final bool noVmTest;
-  final bool noGet;
-  final bool noFormat;
-  final bool noAnalyze;
-  final bool noNpmInstall;
+  final bool? noNodeTest;
+  final bool? noVmTest;
+  final bool? noGet;
+  final bool? noFormat;
+  final bool? noAnalyze;
+  final bool? noNpmInstall;
 
   NodePackageRunCiOptions(
       {this.noNodeTest,
@@ -69,15 +74,14 @@ class NodePackageRunCiOptions {
 /// Dart:
 /// ```
 /// ```
-Future nodePackageRunCi(String path, [NodePackageRunCiOptions options]) async {
-  print('# package: $path');
+Future nodePackageRunCi(String path, [NodePackageRunCiOptions? options]) async {
   var shell = Shell(workingDirectory: path);
 
   var pubspecMap = await pathGetPubspecYamlMap(path);
   var analysisOptionsMap = await pathGetAnalysisOptionsYamlMap(path);
   var isFlutterPackage = pubspecYamlSupportsFlutter(pubspecMap);
 
-  var sdkBoundaries = pubspecYamlGetSdkBoundaries(pubspecMap);
+  var sdkBoundaries = pubspecYamlGetSdkBoundaries(pubspecMap)!;
   var supportsNnbdExperiment =
       analysisOptionsSupportsNnbdExperiment(analysisOptionsMap);
 

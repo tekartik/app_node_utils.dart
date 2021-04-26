@@ -6,7 +6,7 @@ pc.PlatformContext get platformContext => pc.platformContextNode;
 
 class PlatformNode implements Platform {
   @override
-  Map<String, String> get environment => platformContext.node.environment;
+  Map<String, String> get environment => platformContext.node!.environment;
 }
 
 final platform = PlatformNode();

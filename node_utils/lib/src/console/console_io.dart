@@ -21,7 +21,7 @@ class _ConsoleSink implements ConsoleSink {
   void close() => ioSink.close();
 
   @override
-  void write(Object obj) => ioSink.write(obj);
+  void write(Object? obj) => ioSink.write(obj);
 
   @override
   void writeAll(Iterable objects, [String separator = '']) {
@@ -34,7 +34,7 @@ class _ConsoleSink implements ConsoleSink {
   }
 
   @override
-  void writeln([Object obj = '']) {
+  void writeln([Object? obj = '']) {
     ioSink.writeln(obj);
   }
 }
