@@ -1,9 +1,9 @@
 // Firebase cloud function
 import 'dart:io';
 
+import 'package:path/path.dart';
 import 'package:process_run/shell_run.dart';
 import 'package:tekartik_build_node/build_node.dart';
-import 'package:path/path.dart';
 
 /// Compile bin/main.dart to deploy/functions/index.js
 Future gcfNodeBuildAndServe(
