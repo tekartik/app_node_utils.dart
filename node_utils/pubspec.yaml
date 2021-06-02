@@ -1,6 +1,6 @@
 name: tekartik_app_node_utils
 description: Node utilities.
-version: 0.2.0
+version: 0.2.1
 publish_to: none
 # homepage: https://www.example.com
 
@@ -46,6 +46,7 @@ dev_dependencies:
       ref: null_safety
     version: '>=0.1.0'
   build_runner:
+  build_web_compilers:
   tekartik_build_node:
     git:
       url: git://github.com/tekartik/build_node.dart

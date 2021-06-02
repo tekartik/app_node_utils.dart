@@ -3,8 +3,8 @@ import 'console_none.dart'
     if (dart.library.io) 'console_io.dart' as impl;
 
 abstract class Console {
-  ConsoleSink? get out;
-  ConsoleSink? get err;
+  ConsoleSink get out;
+  ConsoleSink get err;
 }
 
 abstract class ConsoleSink extends Object
