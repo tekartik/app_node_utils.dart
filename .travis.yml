@@ -4,8 +4,6 @@ dart:
   - stable
   - beta
   - dev
-addons:
-  chrome: stable
 
 before_install:
   - nvm install node
