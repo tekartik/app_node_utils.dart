@@ -7,7 +7,7 @@ targets:
       - "test/**"
       - "local_bin/**"
     builders:
-      build_node_compilers|entrypoint:
+      build_web_compilers|entrypoint:
         generate_for:
         - bin/**
         - local_bin/**
