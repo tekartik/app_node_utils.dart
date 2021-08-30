@@ -66,6 +66,28 @@ Future gcfNodePackageServe(String path, {String directory = 'deploy'}) async {
   await shell.run('firebase serve');
 }
 
+/// Deploy functions.
+Future<void> gcfNodePackageDeployFunctions(String path,
+    {String deployDirectory = 'deploy',
+    String? projectId,
+    List<String>? functions}) async {
+  var shell = Shell(workingDirectory: join(path, deployDirectory));
+
+  await shell.run(
+      'firebase ${projectId == null ? '' : '--project $projectId'} deploy --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}');
+}
+
+/// Serve functions.
+Future<void> gcfNodePackageServeFunctions(String path,
+    {String deployDirectory = 'deploy',
+    String? projectId,
+    List<String>? functions}) async {
+  var shell = Shell(workingDirectory: join(path, deployDirectory));
+
+  await shell.run(
+      'firebase${projectId == null ? '' : '--project $projectId'} serve --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}');
+}
+
 // Bad name and implementation - to delete 2021-04-19
 @deprecated
 Future gcfNodeCreate({String directory = 'deploy'}) async {
