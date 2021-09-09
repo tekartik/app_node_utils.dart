@@ -89,7 +89,7 @@ Future<void> gcfNodePackageServeFunctions(String path,
 }
 
 // Bad name and implementation - to delete 2021-04-19
-@deprecated
+@Deprecated('Misnamed since this actually serve')
 Future gcfNodeCreate({String directory = 'deploy'}) async {
   var shell = Shell(workingDirectory: directory);
   await shell.run('firebase serve');
