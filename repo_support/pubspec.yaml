@@ -8,9 +8,13 @@ environment:
 
 dev_dependencies:
   dev_test: '>=0.15.2+2'
-  pedantic:
   path:
   pub_semver:
   process_run:
-
+  tekartik_lints:
+    git:
+      url: git://github.com/tekartik/common.dart
+      ref: null_safety
+      path: packages/lints
+    version: '>=0.1.0'
 
