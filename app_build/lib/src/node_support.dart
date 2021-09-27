@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 import 'package:process_run/shell.dart';
-import 'package:process_run/which.dart';
 
 /// true if flutter is supported
 final isNodeSupported = whichSync('node') != null;
