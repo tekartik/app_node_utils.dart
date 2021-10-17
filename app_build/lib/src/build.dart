@@ -2,6 +2,7 @@ import 'package:process_run/shell_run.dart';
 
 import 'copy_to_deploy.dart';
 
+@Deprecated('Use nodePackageBuild instead')
 Future build({String directory = 'bin'}) async {
   var shell = Shell();
   await shell.run('''
