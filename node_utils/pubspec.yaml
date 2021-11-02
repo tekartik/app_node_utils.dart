@@ -54,5 +54,5 @@ dev_dependencies:
       ref: dart2_3
 
 dependency_overrides:
-  # tekartik_app_node_build:
-  #   path: ../app_build
+  tekartik_app_node_build:
+     path: ../app_build
