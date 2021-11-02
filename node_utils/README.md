@@ -7,9 +7,9 @@ Dependencies:
 dependencies:
   tekartik_app_node_utils:
     git:
-      url: git://github.com/tekartik/app_node_utils.dart
+      url: https://github.com/tekartik/app_node_utils.dart
       path: node_utils
-      ref: null_safety
+      ref: dart2_3
     version: '>=0.1.0'
 ```
 ## Usage
