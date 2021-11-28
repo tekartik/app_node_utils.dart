@@ -11,27 +11,27 @@ dependencies:
   path: ^1.7.0
   tekartik_platform:
     git:
-      url: git://github.com/tekartik/platform.dart
+      url: https://github.com/tekartik/platform.dart
       path: platform
-      ref: null_safety
+      ref: dart2_3
     version: '>=0.2.1'
   tekartik_platform_node:
     git:
-      url: git://github.com/tekartik/common_node.dart
+      url: https://github.com/tekartik/common_node.dart
       path: platform_node
-      ref: null_safety
+      ref: dart2_3
     version: '>=0.2.1'
   tekartik_platform_io:
     git:
-      url: git://github.com/tekartik/platform.dart
+      url: https://github.com/tekartik/platform.dart
       path: platform_io
-      ref: null_safety
+      ref: dart2_3
     version: '>=0.2.1'
   tekartik_js_utils:
     git:
-      url: git://github.com/tekartik/js_utils.dart
+      url: https://github.com/tekartik/js_utils.dart
       path: js_utils
-      ref: null_safety
+      ref: dart2_3
     version: '>=0.1.1'
   process_run:
 
@@ -41,18 +41,18 @@ dev_dependencies:
   # Needed direct dependencies
   tekartik_app_node_build:
     git:
-      url: git://github.com/tekartik/app_node_utils.dart
+      url: https://github.com/tekartik/app_node_utils.dart
       path: app_build
-      ref: null_safety
+      ref: dart2_3
     version: '>=0.1.0'
   build_runner:
   build_web_compilers:
   tekartik_build_node:
     git:
-      url: git://github.com/tekartik/build_node.dart
+      url: https://github.com/tekartik/build_node.dart
       path: packages/build_node
-      ref: null_safety
+      ref: dart2_3
 
 dependency_overrides:
-  # tekartik_app_node_build:
-  #   path: ../app_build
+  tekartik_app_node_build:
+     path: ../app_build

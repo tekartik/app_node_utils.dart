@@ -1,1 +1,2 @@
-export 'src/run_ci.dart' show nodePackageRunCi, NodePackageRunCiOptions;
+// To deprecate use build_node instead
+export 'package:tekartik_build_node/package.dart';
