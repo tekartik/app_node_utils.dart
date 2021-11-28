@@ -19,13 +19,13 @@ jobs:
         dart: [stable, beta, dev]
         node: ['10', '14']
     steps:
-      - uses: dart-lang/setup-dart@v1
+      - uses: dart-lang/setup-dart@v1.3
         with:
           sdk: ${{ matrix.dart }}
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
-      - uses: actions/checkout@v2
       - run: dart --version
       - run: dart pub get
       - run: dart run tool/run_ci.dart
