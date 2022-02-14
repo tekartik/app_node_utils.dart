@@ -52,7 +52,7 @@ dev_dependencies:
       url: https://github.com/tekartik/build_node.dart
       path: packages/build_node
       ref: dart2_3
-
+  stack_trace:
 dependency_overrides:
   tekartik_app_node_build:
      path: ../app_build
