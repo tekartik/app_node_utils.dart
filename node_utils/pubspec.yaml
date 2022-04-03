@@ -9,6 +9,8 @@ environment:
 
 dependencies:
   path: ^1.7.0
+  stack_trace:
+  js:
   tekartik_platform:
     git:
       url: https://github.com/tekartik/platform.dart
@@ -52,7 +54,6 @@ dev_dependencies:
       url: https://github.com/tekartik/build_node.dart
       path: packages/build_node
       ref: dart2_3
-  stack_trace:
 dependency_overrides:
   tekartik_app_node_build:
      path: ../app_build
