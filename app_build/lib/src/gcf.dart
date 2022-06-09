@@ -5,6 +5,8 @@ import 'package:path/path.dart';
 import 'package:process_run/shell_run.dart';
 import 'package:tekartik_build_node/build_node.dart';
 
+import 'gcf_common.dart';
+
 /// Compile bin/main.dart to deploy/functions/index.js
 Future gcfNodeBuildAndServe(
     {String directory = 'bin', String deployDirectory = 'deploy'}) async {
@@ -73,8 +75,10 @@ Future<void> gcfNodePackageDeployFunctions(String path,
     List<String>? functions}) async {
   var shell = Shell(workingDirectory: join(path, deployDirectory));
 
-  await shell.run(
-      'firebase ${projectId == null ? '' : '--project $projectId'} deploy --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}');
+  await shell.run(gcfNodePackageDeployFunctionsCommand(
+      deployDirectory: deployDirectory,
+      projectId: projectId,
+      functions: functions));
 }
 
 /// Serve functions.
@@ -84,8 +88,10 @@ Future<void> gcfNodePackageServeFunctions(String path,
     List<String>? functions}) async {
   var shell = Shell(workingDirectory: join(path, deployDirectory));
 
-  await shell.run(
-      'firebase${projectId == null ? '' : '--project $projectId'} serve --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}');
+  await shell.run(gcfNodePackageServeFunctionsCommand(
+      deployDirectory: deployDirectory,
+      projectId: projectId,
+      functions: functions));
 }
 
 // Bad name and implementation - to delete 2021-04-19
