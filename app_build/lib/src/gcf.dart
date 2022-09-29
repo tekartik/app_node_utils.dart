@@ -9,16 +9,23 @@ import 'gcf_common.dart';
 
 /// Compile bin/main.dart to deploy/functions/index.js
 Future gcfNodeBuildAndServe(
-    {String directory = 'bin', String deployDirectory = 'deploy'}) async {
+    {String directory = 'bin',
+    String deployDirectory = 'deploy',
+    String? projectId}) async {
   await gcfNodePackageBuildAndServe('.',
-      directory: directory, deployDirectory: deployDirectory);
+      directory: directory,
+      deployDirectory: deployDirectory,
+      projectId: projectId);
 }
 
 Future gcfNodePackageBuildAndServe(String path,
-    {String directory = 'bin', String deployDirectory = 'deploy'}) async {
+    {String directory = 'bin',
+    String deployDirectory = 'deploy',
+    String? projectId}) async {
   await gcfNodePackageBuild(path,
       directory: directory, deployDirectory: deployDirectory);
-  await gcfNodePackageServe(path, directory: deployDirectory);
+  await gcfNodePackageServe(path,
+      directory: deployDirectory, projectId: projectId);
 }
 
 Future gcfNodeBuild(
@@ -58,14 +65,16 @@ Future gcfNodePackageNpmUpgrade(String path,
   }
 }
 
-Future gcfNodeServe({String directory = 'deploy'}) async {
+Future gcfNodeServe({String directory = 'deploy', String? projectId}) async {
   await gcfNodePackageServe('.', directory: directory);
 }
 
-Future gcfNodePackageServe(String path, {String directory = 'deploy'}) async {
+Future gcfNodePackageServe(String path,
+    {String directory = 'deploy', String? projectId}) async {
   await gcfNodePackageNpmInstall(path);
   var shell = Shell(workingDirectory: join(path, directory));
-  await shell.run('firebase serve');
+  await shell
+      .run('firebase serve${gcfNodePackageFirebaseArgProjectId(projectId)}');
 }
 
 /// Deploy functions.
