@@ -47,6 +47,12 @@ dev_dependencies:
       path: app_build
       ref: dart2_3
     version: '>=0.1.0'
+  tekartik_app_node_build_menu:
+    git:
+      url: https://github.com/tekartik/app_node_utils.dart
+      path: app_build_menu
+      ref: dart2_3
+    version: '>=0.1.0'
   build_runner:
   build_web_compilers:
   tekartik_build_node:
@@ -56,4 +62,6 @@ dev_dependencies:
       ref: dart2_3
 dependency_overrides:
   tekartik_app_node_build:
-     path: ../app_build
+    path: ../app_build
+  tekartik_app_node_build_menu:
+    path: ../app_build_menu

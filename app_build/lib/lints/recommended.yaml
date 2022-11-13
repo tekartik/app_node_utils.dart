@@ -1,0 +1,6 @@
+# tekartik lints over google lints
+include: package:tekartik_lints/recommended.yaml
+
+analyzer:
+  exclude:
+    - build/**

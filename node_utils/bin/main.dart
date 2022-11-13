@@ -19,4 +19,5 @@ Future main() async {
   }
 
   testThrow();
+  print('End of main success');
 }

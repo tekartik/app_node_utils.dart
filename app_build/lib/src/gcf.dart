@@ -2,8 +2,9 @@
 import 'dart:io';
 
 import 'package:path/path.dart';
+import 'package:process_run/shell.dart';
 import 'package:process_run/shell_run.dart';
-import 'package:tekartik_build_node/build_node.dart';
+import 'package:tekartik_app_node_build/app_build.dart';
 
 import 'gcf_common.dart';
 
@@ -28,6 +29,7 @@ Future gcfNodePackageBuildAndServe(String path,
       directory: deployDirectory, projectId: projectId);
 }
 
+@Deprecated('Use gcfNodePackageBuild')
 Future gcfNodeBuild(
     {String directory = 'bin', String deployDirectory = 'deploy'}) async {
   await gcfNodePackageBuild('.',
@@ -132,5 +134,46 @@ Future gcfNodePackageCopyToDeploy(String path,
   } catch (e) {
     await Directory(deployDirectory).create(recursive: true);
     await copy();
+  }
+}
+
+String getDefaultProjectId() {
+  return ShellEnvironment().vars['TEKARTIK_FIREBASE_PROJECT_ID'] ??
+      '-unset-project-id-';
+}
+
+/// New builder helper
+class GcfNodeAppBuilder {
+  late final GcfNodeAppOptions options;
+
+  GcfNodeAppBuilder({GcfNodeAppOptions? options}) {
+    this.options =
+        options ?? GcfNodeAppOptions(projectId: getDefaultProjectId());
+  }
+
+  Future<void> build() async {
+    await gcfNodePackageBuild(options.packageTop,
+        directory: options.srcDir, deployDirectory: options.deployDir);
+  }
+
+  Future<void> serve() async {
+    await gcfNodePackageServe(options.packageTop,
+        directory: options.deployDir, projectId: options.projectId);
+  }
+
+  Future<void> buildAndServe() async {
+    await gcfNodePackageBuildAndServe(options.packageTop,
+        directory: options.srcDir, deployDirectory: options.deployDir);
+  }
+
+  Future<void> clean() async {
+    await nodePackageClean(options.packageTop);
+  }
+
+  Future<void> deployFunctions({List<String>? functions}) async {
+    await gcfNodePackageDeployFunctions(options.packageTop,
+        projectId: options.projectId,
+        deployDirectory: options.deployDir,
+        functions: functions ?? options.functions);
   }
 }

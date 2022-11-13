@@ -1,3 +1,5 @@
+import 'build_common.dart';
+
 /// Serve functions.
 String gcfNodePackageServeFunctionsCommand(
     {String deployDirectory = 'deploy',
@@ -15,3 +17,18 @@ String gcfNodePackageDeployFunctionsCommand(
 
 String gcfNodePackageFirebaseArgProjectId(String? projectId) =>
     projectId == null ? '' : ' --project $projectId';
+
+const gcfDeployDirDefault = 'deploy/firebase/hosting';
+
+class GcfNodeAppOptions extends NodeAppOptions {
+  final String projectId;
+  final List<String>? functions;
+  GcfNodeAppOptions(
+      {required this.projectId,
+      String? packageTop,
+      String? deployDir,
+      this.functions})
+      : super(
+            packageTop: packageTop,
+            deployDir: deployDir ?? gcfDeployDirDefault);
+}

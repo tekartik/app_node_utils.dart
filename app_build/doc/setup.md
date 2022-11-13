@@ -15,7 +15,7 @@
     
       # Needed direct dependencies
       build_runner:
-      build_node_compilers:
+      build_web_compilers:
     ```
 - create `tool/run_ci.dart` doc (you can copy it from here)
 
@@ -37,7 +37,7 @@
           - "bin/**"
           - "test/**"
         builders:
-          build_node_compilers|entrypoint:
+          build_web_compilers|entrypoint:
             generate_for:
             - bin/**
             options:

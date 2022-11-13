@@ -3,6 +3,18 @@
 /// More dartdocs go here.
 library tekartik_app_node_build.app_build;
 
+export 'package:tekartik_build_node/build_node.dart'
+    show nodePackageBuild, nodePackageCheck, nodePackageRunTest;
+export 'package:tekartik_build_node/package.dart'
+    show nodePackageRunCi, NodePackageRunCiOptions;
+
+export 'src/build.dart'
+    show
+        nodePackageRun,
+        nodePackageCopyToDeploy,
+        nodePackageClean,
+        NodeAppBuilder;
+export 'src/build_common.dart' show NodeAppOptions;
 export 'src/copy_to_deploy.dart' show nodeCopyToDeploy;
 export 'src/run.dart' show nodeBuild, nodeRun, nodeBuildAndRun, nodeRunTest;
 
