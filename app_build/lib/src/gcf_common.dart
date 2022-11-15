@@ -29,7 +29,7 @@ class GcfNodeAppOptions extends NodeAppOptions {
   /// Optional IP port (5000)
   final int? port;
   GcfNodeAppOptions(
-      {required this.projectId,
+      {this.projectId,
       String? packageTop,
       String? deployDir,
       String? srcDir,
