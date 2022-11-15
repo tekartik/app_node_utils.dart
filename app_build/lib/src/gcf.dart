@@ -160,12 +160,17 @@ class GcfNodeAppBuilder {
 
   Future<void> serve() async {
     await gcfNodePackageServe(options.packageTop,
-        directory: options.deployDir, projectId: options.projectId);
+        directory: options.deployDir,
+        projectId: options.projectId,
+        port: options.port);
   }
 
   Future<void> buildAndServe() async {
     await gcfNodePackageBuildAndServe(options.packageTop,
-        directory: options.srcDir, deployDirectory: options.deployDir);
+        directory: options.srcDir,
+        deployDirectory: options.deployDir,
+        projectId: options.projectId,
+        port: options.port);
   }
 
   Future<void> clean() async {
@@ -177,5 +182,15 @@ class GcfNodeAppBuilder {
         projectId: options.projectId,
         deployDirectory: options.deployDir,
         functions: functions ?? options.functions);
+  }
+
+  Future<void> npmInstall() async {
+    await gcfNodePackageNpmInstall(options.packageTop,
+        deployDirectory: options.deployDir);
+  }
+
+  Future<void> npmUpgrade() async {
+    await gcfNodePackageNpmUpgrade(options.packageTop,
+        deployDirectory: options.deployDir);
   }
 }
