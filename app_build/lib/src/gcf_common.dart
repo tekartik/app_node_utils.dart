@@ -22,7 +22,8 @@ const gcfDeployDirDefault = 'deploy/firebase/hosting';
 
 /// Google cloud node function options.
 class GcfNodeAppOptions extends NodeAppOptions {
-  final String projectId;
+  /// Recommended.
+  final String? projectId;
   final List<String>? functions;
 
   /// Optional IP port (5000)

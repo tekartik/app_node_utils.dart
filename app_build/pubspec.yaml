@@ -1,6 +1,6 @@
 name: tekartik_app_node_build
 description: Node build dependencies
-version: 0.3.1
+version: 0.3.2
 publish_to: none
 deploy_to: none
 
