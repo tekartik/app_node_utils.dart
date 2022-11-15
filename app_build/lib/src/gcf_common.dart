@@ -20,15 +20,22 @@ String gcfNodePackageFirebaseArgProjectId(String? projectId) =>
 
 const gcfDeployDirDefault = 'deploy/firebase/hosting';
 
+/// Google cloud node function options.
 class GcfNodeAppOptions extends NodeAppOptions {
   final String projectId;
   final List<String>? functions;
+
+  /// Optional IP port (5000)
+  final int? port;
   GcfNodeAppOptions(
       {required this.projectId,
       String? packageTop,
       String? deployDir,
+      String? srcDir,
+      this.port,
       this.functions})
       : super(
             packageTop: packageTop,
-            deployDir: deployDir ?? gcfDeployDirDefault);
+            deployDir: deployDir ?? gcfDeployDirDefault,
+            srcDir: srcDir);
 }

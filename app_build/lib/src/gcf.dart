@@ -22,11 +22,12 @@ Future gcfNodeBuildAndServe(
 Future gcfNodePackageBuildAndServe(String path,
     {String directory = 'bin',
     String deployDirectory = 'deploy',
-    String? projectId}) async {
+    String? projectId,
+    int? port}) async {
   await gcfNodePackageBuild(path,
       directory: directory, deployDirectory: deployDirectory);
   await gcfNodePackageServe(path,
-      directory: deployDirectory, projectId: projectId);
+      directory: deployDirectory, projectId: projectId, port: port);
 }
 
 @Deprecated('Use gcfNodePackageBuild')
@@ -72,11 +73,12 @@ Future gcfNodeServe({String directory = 'deploy', String? projectId}) async {
 }
 
 Future gcfNodePackageServe(String path,
-    {String directory = 'deploy', String? projectId}) async {
+    {String directory = 'deploy', String? projectId, int? port}) async {
   await gcfNodePackageNpmInstall(path);
   var shell = Shell(workingDirectory: join(path, directory));
   await shell
-      .run('firebase serve${gcfNodePackageFirebaseArgProjectId(projectId)}');
+      .run('firebase serve${gcfNodePackageFirebaseArgProjectId(projectId)}'
+          '${port == null ? '' : ' -p $port'}');
 }
 
 /// Deploy functions.
@@ -158,12 +160,17 @@ class GcfNodeAppBuilder {
 
   Future<void> serve() async {
     await gcfNodePackageServe(options.packageTop,
-        directory: options.deployDir, projectId: options.projectId);
+        directory: options.deployDir,
+        projectId: options.projectId,
+        port: options.port);
   }
 
   Future<void> buildAndServe() async {
     await gcfNodePackageBuildAndServe(options.packageTop,
-        directory: options.srcDir, deployDirectory: options.deployDir);
+        directory: options.srcDir,
+        deployDirectory: options.deployDir,
+        projectId: options.projectId,
+        port: options.port);
   }
 
   Future<void> clean() async {
@@ -175,5 +182,15 @@ class GcfNodeAppBuilder {
         projectId: options.projectId,
         deployDirectory: options.deployDir,
         functions: functions ?? options.functions);
+  }
+
+  Future<void> npmInstall() async {
+    await gcfNodePackageNpmInstall(options.packageTop,
+        deployDirectory: options.deployDir);
+  }
+
+  Future<void> npmUpgrade() async {
+    await gcfNodePackageNpmUpgrade(options.packageTop,
+        deployDirectory: options.deployDir);
   }
 }

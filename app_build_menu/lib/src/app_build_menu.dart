@@ -11,6 +11,15 @@ Future main(List<String> arguments) async {
 
 void gcfMenuAppContent({required GcfNodeAppOptions? options}) {
   var builder = GcfNodeAppBuilder(options: options);
+  menu('npm', () {
+    item('npm install', () async {
+await builder.npmInstall();
+    });
+    item('npm upgrade', () async {
+      await builder.npmUpgrade();
+    });
+
+  });
   menu('gcf_build', () {
     item('build', () async {
       await builder.build();
@@ -28,6 +37,7 @@ void gcfMenuAppContent({required GcfNodeAppOptions? options}) {
     item('deployFunction', () async {
       await builder.deployFunctions();
     });
+
   });
 }
 
