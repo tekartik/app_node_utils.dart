@@ -163,7 +163,7 @@ class GcfNodeAppBuilder {
 
   Future<void> buildAndServe() async {
     await gcfNodePackageBuildAndServe(options.packageTop,
-        directory: options.srcDir, deployDirectory: options.deployDir);
+        directory: options.srcDir, deployDirectory: options.deployDir, projectId: options.projectId);
   }
 
   Future<void> clean() async {
