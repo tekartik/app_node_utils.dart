@@ -3,6 +3,11 @@ import 'package:test/test.dart';
 
 void main() {
   group('gcf', () {
+    group('option', () {
+      test('no param', () {
+        GcfNodeAppOptions();
+      });
+    });
     test('gcfNodePackageServeFunctionsCommand', () {
       expect(gcfNodePackageServeFunctionsCommand(),
           'firebase serve --only functions');

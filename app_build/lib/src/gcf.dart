@@ -22,11 +22,12 @@ Future gcfNodeBuildAndServe(
 Future gcfNodePackageBuildAndServe(String path,
     {String directory = 'bin',
     String deployDirectory = 'deploy',
-    String? projectId}) async {
+    String? projectId,
+    int? port}) async {
   await gcfNodePackageBuild(path,
       directory: directory, deployDirectory: deployDirectory);
   await gcfNodePackageServe(path,
-      directory: deployDirectory, projectId: projectId);
+      directory: deployDirectory, projectId: projectId, port: port);
 }
 
 @Deprecated('Use gcfNodePackageBuild')
@@ -72,11 +73,12 @@ Future gcfNodeServe({String directory = 'deploy', String? projectId}) async {
 }
 
 Future gcfNodePackageServe(String path,
-    {String directory = 'deploy', String? projectId}) async {
+    {String directory = 'deploy', String? projectId, int? port}) async {
   await gcfNodePackageNpmInstall(path);
   var shell = Shell(workingDirectory: join(path, directory));
   await shell
-      .run('firebase serve${gcfNodePackageFirebaseArgProjectId(projectId)}');
+      .run('firebase serve${gcfNodePackageFirebaseArgProjectId(projectId)}'
+          '${port == null ? '' : ' -p $port'}');
 }
 
 /// Deploy functions.
@@ -163,7 +165,7 @@ class GcfNodeAppBuilder {
 
   Future<void> buildAndServe() async {
     await gcfNodePackageBuildAndServe(options.packageTop,
-        directory: options.srcDir, deployDirectory: options.deployDir, projectId: options.projectId);
+        directory: options.srcDir, deployDirectory: options.deployDir);
   }
 
   Future<void> clean() async {
