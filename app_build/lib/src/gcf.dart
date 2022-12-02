@@ -68,6 +68,16 @@ Future gcfNodePackageNpmUpgrade(String path,
   }
 }
 
+Future gcfNodePackageNpmUpgradeFirebaseAdmin(String path,
+    {String deployDirectory = 'deploy'}) async {
+  //print('# ${File(join(path, deployDirectory, 'functions', 'package.json')).statSync()}');
+  if ((File(join(path, deployDirectory, 'functions', 'package.json'))
+      .existsSync())) {
+    await Shell(workingDirectory: join(path, deployDirectory, 'functions'))
+        .run('npm install --save firebase-admin@latest');
+  }
+}
+
 Future gcfNodeServe({String directory = 'deploy', String? projectId}) async {
   await gcfNodePackageServe('.', directory: directory);
 }
@@ -191,6 +201,11 @@ class GcfNodeAppBuilder {
 
   Future<void> npmUpgrade() async {
     await gcfNodePackageNpmUpgrade(options.packageTop,
+        deployDirectory: options.deployDir);
+  }
+
+  Future<void> npmUpgradeFirebaseAdmin() async {
+    await gcfNodePackageNpmUpgradeFirebaseAdmin(options.packageTop,
         deployDirectory: options.deployDir);
   }
 }

@@ -15,7 +15,10 @@ void gcfMenuAppContent({required GcfNodeAppOptions? options}) {
     item('npm install', () async {
       await builder.npmInstall();
     });
-    item('npm upgrade', () async {
+    item('npm upgrade firebase-functions', () async {
+      await builder.npmUpgrade();
+    });
+    item('npm upgrade firebase-admin', () async {
       await builder.npmUpgrade();
     });
   });
