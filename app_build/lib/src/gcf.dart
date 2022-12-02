@@ -2,23 +2,35 @@
 import 'dart:io';
 
 import 'package:path/path.dart';
+import 'package:process_run/shell.dart';
 import 'package:process_run/shell_run.dart';
-import 'package:tekartik_build_node/build_node.dart';
+import 'package:tekartik_app_node_build/app_build.dart';
+
+import 'gcf_common.dart';
 
 /// Compile bin/main.dart to deploy/functions/index.js
 Future gcfNodeBuildAndServe(
-    {String directory = 'bin', String deployDirectory = 'deploy'}) async {
+    {String directory = 'bin',
+    String deployDirectory = 'deploy',
+    String? projectId}) async {
   await gcfNodePackageBuildAndServe('.',
-      directory: directory, deployDirectory: deployDirectory);
+      directory: directory,
+      deployDirectory: deployDirectory,
+      projectId: projectId);
 }
 
 Future gcfNodePackageBuildAndServe(String path,
-    {String directory = 'bin', String deployDirectory = 'deploy'}) async {
+    {String directory = 'bin',
+    String deployDirectory = 'deploy',
+    String? projectId,
+    int? port}) async {
   await gcfNodePackageBuild(path,
       directory: directory, deployDirectory: deployDirectory);
-  await gcfNodePackageServe(path, directory: deployDirectory);
+  await gcfNodePackageServe(path,
+      directory: deployDirectory, projectId: projectId, port: port);
 }
 
+@Deprecated('Use gcfNodePackageBuild')
 Future gcfNodeBuild(
     {String directory = 'bin', String deployDirectory = 'deploy'}) async {
   await gcfNodePackageBuild('.',
@@ -56,14 +68,27 @@ Future gcfNodePackageNpmUpgrade(String path,
   }
 }
 
-Future gcfNodeServe({String directory = 'deploy'}) async {
+Future gcfNodePackageNpmUpgradeFirebaseAdmin(String path,
+    {String deployDirectory = 'deploy'}) async {
+  //print('# ${File(join(path, deployDirectory, 'functions', 'package.json')).statSync()}');
+  if ((File(join(path, deployDirectory, 'functions', 'package.json'))
+      .existsSync())) {
+    await Shell(workingDirectory: join(path, deployDirectory, 'functions'))
+        .run('npm install --save firebase-admin@latest');
+  }
+}
+
+Future gcfNodeServe({String directory = 'deploy', String? projectId}) async {
   await gcfNodePackageServe('.', directory: directory);
 }
 
-Future gcfNodePackageServe(String path, {String directory = 'deploy'}) async {
+Future gcfNodePackageServe(String path,
+    {String directory = 'deploy', String? projectId, int? port}) async {
   await gcfNodePackageNpmInstall(path);
   var shell = Shell(workingDirectory: join(path, directory));
-  await shell.run('firebase serve');
+  await shell
+      .run('firebase serve${gcfNodePackageFirebaseArgProjectId(projectId)}'
+          '${port == null ? '' : ' -p $port'}');
 }
 
 /// Deploy functions.
@@ -73,8 +98,10 @@ Future<void> gcfNodePackageDeployFunctions(String path,
     List<String>? functions}) async {
   var shell = Shell(workingDirectory: join(path, deployDirectory));
 
-  await shell.run(
-      'firebase ${projectId == null ? '' : '--project $projectId'} deploy --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}');
+  await shell.run(gcfNodePackageDeployFunctionsCommand(
+      deployDirectory: deployDirectory,
+      projectId: projectId,
+      functions: functions));
 }
 
 /// Serve functions.
@@ -84,8 +111,10 @@ Future<void> gcfNodePackageServeFunctions(String path,
     List<String>? functions}) async {
   var shell = Shell(workingDirectory: join(path, deployDirectory));
 
-  await shell.run(
-      'firebase${projectId == null ? '' : '--project $projectId'} serve --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}');
+  await shell.run(gcfNodePackageServeFunctionsCommand(
+      deployDirectory: deployDirectory,
+      projectId: projectId,
+      functions: functions));
 }
 
 // Bad name and implementation - to delete 2021-04-19
@@ -117,5 +146,66 @@ Future gcfNodePackageCopyToDeploy(String path,
   } catch (e) {
     await Directory(deployDirectory).create(recursive: true);
     await copy();
+  }
+}
+
+String getDefaultProjectId() {
+  return ShellEnvironment().vars['TEKARTIK_FIREBASE_PROJECT_ID'] ??
+      '-unset-project-id-';
+}
+
+/// New builder helper
+class GcfNodeAppBuilder {
+  late final GcfNodeAppOptions options;
+
+  GcfNodeAppBuilder({GcfNodeAppOptions? options}) {
+    this.options =
+        options ?? GcfNodeAppOptions(projectId: getDefaultProjectId());
+  }
+
+  Future<void> build() async {
+    await gcfNodePackageBuild(options.packageTop,
+        directory: options.srcDir, deployDirectory: options.deployDir);
+  }
+
+  Future<void> serve() async {
+    await gcfNodePackageServe(options.packageTop,
+        directory: options.deployDir,
+        projectId: options.projectId,
+        port: options.port);
+  }
+
+  Future<void> buildAndServe() async {
+    await gcfNodePackageBuildAndServe(options.packageTop,
+        directory: options.srcDir,
+        deployDirectory: options.deployDir,
+        projectId: options.projectId,
+        port: options.port);
+  }
+
+  Future<void> clean() async {
+    await nodePackageClean(options.packageTop);
+  }
+
+  Future<void> deployFunctions({List<String>? functions}) async {
+    await gcfNodePackageDeployFunctions(options.packageTop,
+        projectId: options.projectId,
+        deployDirectory: options.deployDir,
+        functions: functions ?? options.functions);
+  }
+
+  Future<void> npmInstall() async {
+    await gcfNodePackageNpmInstall(options.packageTop,
+        deployDirectory: options.deployDir);
+  }
+
+  Future<void> npmUpgrade() async {
+    await gcfNodePackageNpmUpgrade(options.packageTop,
+        deployDirectory: options.deployDir);
+  }
+
+  Future<void> npmUpgradeFirebaseAdmin() async {
+    await gcfNodePackageNpmUpgradeFirebaseAdmin(options.packageTop,
+        deployDirectory: options.deployDir);
   }
 }
