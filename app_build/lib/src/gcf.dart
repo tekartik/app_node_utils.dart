@@ -168,6 +168,11 @@ class GcfNodeAppBuilder {
         directory: options.srcDir, deployDirectory: options.deployDir);
   }
 
+  Future<void> copyToDeploy() async {
+    await gcfNodePackageCopyToDeploy(options.packageTop,
+        directory: options.srcDir, deployDirectory: options.deployDir);
+  }
+
   Future<void> serve() async {
     await gcfNodePackageServe(options.packageTop,
         directory: options.deployDir,
@@ -185,6 +190,11 @@ class GcfNodeAppBuilder {
 
   Future<void> clean() async {
     await nodePackageClean(options.packageTop);
+  }
+
+  Future<void> buildAndDeployFunctions({List<String>? functions}) async {
+    await build();
+    await deployFunctions(functions: functions);
   }
 
   Future<void> deployFunctions({List<String>? functions}) async {
