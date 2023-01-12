@@ -12,10 +12,10 @@ class _Console implements Console {
 }
 
 @JS('console.error')
-external void _consoleError(object);
+external void _consoleError(Object? object);
 
 @JS('console.log')
-external void _consoleLog(object);
+external void _consoleLog(Object? object);
 
 class _ConsoleErrorSink extends _ConsoleSink {
   @override

@@ -68,7 +68,7 @@ void menuAppContent({String path = '.'}) {
       pubspec = await pathGetPubspecYamlMap(path);
       return pubspec;
     } catch (_) {}
-    return {};
+    return <String, Object?>{};
   }();
 
   menu('pub', () async {

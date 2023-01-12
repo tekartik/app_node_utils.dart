@@ -1,2 +1,2 @@
 # tekartik lints over dart lints for node apps
-include: package:tekartik_app_node_build/lints/recommended.yaml
+include: package:tekartik_lints/strict.yaml
