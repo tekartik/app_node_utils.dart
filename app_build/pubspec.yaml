@@ -19,14 +19,14 @@ dependencies:
       url: https://github.com/tekartik/build_node.dart
       path: packages/build_node
       ref: dart2_3
-
-dev_dependencies:
-  build_test:
   tekartik_common_utils:
     git:
       url: https://github.com/tekartik/common_utils.dart
       ref: dart2_3
     version: '>=0.1.0'
+
+dev_dependencies:
+  build_test:
 
 # dependency_overrides:
   # tekartik_lints:
