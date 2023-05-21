@@ -46,4 +46,4 @@ dependency_overrides:
   #  path: ../app_build
 
 executables:
-  nbm: fbm
+  nbm: nbm
