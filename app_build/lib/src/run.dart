@@ -47,5 +47,5 @@ Future nodeRunTest() async {
   await nodeCheck();
   await nodeTestCheck('.');
   var shell = Shell();
-  await shell.run('pub run test -p node');
+  await shell.run('dart pub run test -p node');
 }
