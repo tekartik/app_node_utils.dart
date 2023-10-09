@@ -10,7 +10,7 @@
         git:
           url: https://github.com/tekartik/app_node_utils.dart
           path: app_build
-          ref: dart2_3
+          ref: dart3a
         version: '>=0.1.0'
     
       # Needed direct dependencies

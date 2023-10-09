@@ -1,4 +1,4 @@
-# tekartik_build_menu_flutter
+# tekartik_app_node_build_menu
 
 Flutter build utils in a menu
 
@@ -11,7 +11,7 @@ dev_dependencies:
   tekartik_app_node_build_menu:
     git: 
         url: https://github.com/tekartik/app_node_utils.dart
-        ref: dart2_3
+        ref: dart3a
         path: app_build_menu
     version: '>=0.3.0'
     

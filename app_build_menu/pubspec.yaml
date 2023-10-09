@@ -5,7 +5,7 @@ publish_to: none
 # homepage: https://www.example.com
 
 environment:
-  sdk: '>=2.18.3 <3.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   path:
@@ -15,24 +15,24 @@ dependencies:
   tekartik_test_menu_io:
     git:
       url: https://github.com/tekartik/test_menu.dart
-      ref: dart2_3
+      ref: dart3a
       path: test_menu_io
   tekartik_test_menu:
     git:
       url: https://github.com/tekartik/test_menu.dart
-      ref: dart2_3
+      ref: dart3a
       path: test_menu
   tekartik_app_node_build:
     git:
       url: https://github.com/tekartik/app_node_utils.dart
       path: app_build
-      ref: dart2_3
+      ref: dart3a
     version: '>=0.1.0'
   tekartik_build_node:
     git:
       url: https://github.com/tekartik/build_node.dart
       path: packages/build_node
-      ref: dart2_3
+      ref: dart3a
 
 dev_dependencies:
   # Needed direct dependencies
@@ -46,4 +46,4 @@ dependency_overrides:
     path: ../app_build
 
 executables:
-  nbm: fbm
+  nbm: nbm
