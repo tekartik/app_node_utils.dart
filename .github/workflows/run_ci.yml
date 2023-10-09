@@ -19,7 +19,7 @@ jobs:
         dart: [3.0.5, stable, beta, dev]
         node: ['14', '20']
     steps:
-      - uses: dart-lang/setup-dart@v1.3
+      - uses: dart-lang/setup-dart@v1.4
         with:
           sdk: ${{ matrix.dart }}
       - uses: actions/checkout@v2
