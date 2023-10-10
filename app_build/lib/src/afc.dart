@@ -1,4 +1,6 @@
 /// Aliyun function compute
+library;
+
 import 'dart:io';
 
 import 'package:process_run/shell_run.dart';
