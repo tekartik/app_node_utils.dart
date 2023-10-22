@@ -34,13 +34,10 @@ class GcfNodeAppOptions extends NodeAppOptions {
   final int? port;
   GcfNodeAppOptions(
       {this.projectId,
-      String? packageTop,
+      super.packageTop,
       String? deployDir,
-      String? srcDir,
+      super.srcDir,
       this.port,
       this.functions})
-      : super(
-            packageTop: packageTop,
-            deployDir: deployDir ?? gcfNodeAppDeployDirDefault,
-            srcDir: srcDir);
+      : super(deployDir: deployDir ?? gcfNodeAppDeployDirDefault);
 }
