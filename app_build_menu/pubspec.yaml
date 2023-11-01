@@ -10,7 +10,7 @@ environment:
 dependencies:
   path:
   args:
-  dev_test:
+  dev_test: '>=0.16.2'
   process_run:
   tekartik_test_menu_io:
     git:
