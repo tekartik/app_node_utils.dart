@@ -10,7 +10,7 @@ environment:
 dependencies:
   path:
   args:
-  dev_test:
+  dev_test: '>=0.16.2'
   process_run:
   tekartik_test_menu_io:
     git:
@@ -38,8 +38,8 @@ dev_dependencies:
   # Needed direct dependencies
   build_runner:
   build_web_compilers:
-  lints: ^2.0.0
-  test: ^1.16.0
+  lints: '>=2.0.0'
+  test: '>=1.16.0'
 
 dependency_overrides:
   tekartik_app_node_build:
