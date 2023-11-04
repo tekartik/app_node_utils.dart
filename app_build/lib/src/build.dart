@@ -15,11 +15,12 @@ pub run build_runner build --output=build/ -- -p node
 }
 
 /// Regular node app
-Future nodePackageRun(String path, {String? deployDirectory}) async {
+Future nodePackageRun(String path,
+    {String? deployDirectory, String? basename}) async {
   deployDirectory ??= 'deploy';
   var shell = Shell(workingDirectory: path);
   await shell.run('''
-node ${shellArgument(join(deployDirectory, 'index.js'))}
+node ${shellArgument(join(deployDirectory, '${basename ?? 'index'}.js'))}
   ''');
 }
 
@@ -38,14 +39,16 @@ Future nodePackageClean(String path, {String? deployDirectory}) async {
   } catch (_) {}
 }
 
-/// Convert main.dart to index.js
+/// Copy main.dart.js to index.js
+///
+/// if basename is specified copy <basename>.dart.js to deploy/<basename>.js
 Future nodePackageCopyToDeploy(String path,
-    {String? directory, String? deployDirectory}) async {
+    {String? directory, String? deployDirectory, String? basename}) async {
   directory ??= 'bin';
   deployDirectory ??= 'deploy';
-  var src = File('build/$directory/main.dart.js');
+  var src = File('build/$directory/${basename ?? 'main'}.dart.js');
   Future copy() async {
-    var file = await src.copy('$deployDirectory/index.js');
+    var file = await src.copy('$deployDirectory/${basename ?? 'index'}.js');
     print('copied to $file ${file.statSync()}');
   }
 
@@ -65,25 +68,34 @@ class NodeAppBuilder {
     this.options = options ?? NodeAppOptions();
   }
 
-  Future<void> build() async {
+  /// Build main.dart.js and copy as index.js
+  ///
+  /// if basename is specified, in this case <basename>.dart.js is copied to deploy/<basename>.js
+  Future<void> build({String? basename}) async {
     await nodePackageBuild(options.packageTop, directory: options.srcDir);
-    await copyToDeploy();
+    await copyToDeploy(basename: basename);
   }
 
-  Future<void> copyToDeploy() async {
+  /// Copy main.dart.js to deploy/index.js
+  ///
+  /// if basename is specified, in this case <basename>.dart.js is copied to deploy/<basename>.js
+  Future<void> copyToDeploy({String? basename}) async {
     await nodePackageCopyToDeploy(options.packageTop,
-        directory: options.srcDir, deployDirectory: options.deployDir);
+        directory: options.srcDir,
+        deployDirectory: options.deployDir,
+        basename: basename);
   }
 
-  Future<void> run() async {
-    await copyToDeploy();
-    await nodePackageRun(options.packageTop);
+  Future<void> run({String? basename}) async {
+    await copyToDeploy(basename: basename);
+    await nodePackageRun(options.packageTop, basename: basename);
   }
 
-  Future<void> buildAndRun() async {
+  Future<void> buildAndRun({String? basename}) async {
     await nodePackageBuild(options.packageTop, directory: options.srcDir);
-    await copyToDeploy();
-    await nodePackageRun(options.packageTop);
+    await copyToDeploy(basename: basename);
+    await nodePackageRun(options.packageTop,
+        deployDirectory: options.deployDir, basename: basename);
   }
 
   Future<void> clean() async {
