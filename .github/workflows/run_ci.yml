@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    name: Test on ${{ matrix.os }} / ${{ matrix.dart }}
+    name: Test on ${{ matrix.os }} / dart ${{ matrix.dart }}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -15,9 +15,28 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        dart: [3.0.5, stable, beta, dev]
-        node: ['14', '20']
+        include:
+          - os: ubuntu-latest
+            dart: 3.0.5
+            node: '20'
+          - os: ubuntu-latest
+            dart: stable
+            node: '14'
+          - os: ubuntu-latest
+            dart: stable
+            node: '20'
+          - os: ubuntu-latest
+            dart: beta
+            node: '20'
+          - os: ubuntu-latest
+            dart: dev
+            node: '20'
+          - os: windows-latest
+            dart: stable
+            node: '20'
+          - os: macos-latest
+            dart: stable
+            node: '20'
     steps:
       - uses: dart-lang/setup-dart@v1.4
         with:
