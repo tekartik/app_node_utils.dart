@@ -1,7 +1,6 @@
-@JS()
 library tekartik_node_utils.console_node_js;
 
-import 'package:js/js.dart';
+import 'dart:js_interop';
 import 'package:tekartik_app_node_utils/src/console/console.dart';
 
 class _Console implements Console {
@@ -12,16 +11,16 @@ class _Console implements Console {
 }
 
 @JS('console.error')
-external void _consoleError(Object? object);
+external void _consoleError(JSAny? object);
 
 @JS('console.log')
-external void _consoleLog(Object? object);
+external void _consoleLog(JSAny? object);
 
 class _ConsoleErrorSink extends _ConsoleSink {
   @override
   void writeln([Object? obj = '']) {
     // devPrint('err.writeln($obj)');
-    _consoleError(obj);
+    _consoleError(obj?.jsify());
   }
 }
 
@@ -29,7 +28,7 @@ class _ConsoleOutSink extends _ConsoleSink {
   @override
   void writeln([Object? obj = '']) {
     // devPrint('out.writeln($obj)');
-    _consoleLog(obj);
+    _consoleLog(obj?.jsify());
   }
 }
 

@@ -1,12 +1,12 @@
+import 'package:dev_build/menu/menu_io.dart';
 import 'package:dev_test/build_support.dart';
 import 'package:dev_test/package.dart';
 import 'package:path/path.dart';
 import 'package:tekartik_app_node_build/app_build.dart';
 import 'package:tekartik_app_node_build/gcf_build.dart';
-import 'package:tekartik_test_menu_io/test_menu_io.dart';
 
 Future main(List<String> arguments) async {
-  mainMenu(arguments, menuAppContent);
+  mainMenuConsole(arguments, menuAppContent);
 }
 
 void gcfMenuAppContent({required GcfNodeAppOptions? options}) {
