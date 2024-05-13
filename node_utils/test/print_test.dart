@@ -1,4 +1,6 @@
 @TestOn('node || vm')
+library;
+
 import 'package:test/test.dart';
 
 void main() {

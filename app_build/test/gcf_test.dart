@@ -1,4 +1,6 @@
 @TestOn('vm')
+library;
+
 import 'package:tekartik_app_node_build/src/gcf_common.dart';
 import 'package:test/test.dart';
 
