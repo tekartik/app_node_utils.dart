@@ -4,8 +4,11 @@ import 'build_common.dart';
 String gcfNodePackageServeFunctionsCommand(
     {String deployDirectory = 'deploy',
     String? projectId,
-    List<String>? functions}) {
-  return 'firebase${gcfNodePackageFirebaseArgProjectId(projectId)} serve --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}';
+    List<String>? functions,
+    int? port}) {
+  return 'firebase${gcfNodePackageFirebaseArgProjectId(projectId)} serve'
+      ' --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}'
+      '${port == null ? '' : ' -p $port'}';
 }
 
 String gcfNodePackageDeployFunctionsCommand(
@@ -32,6 +35,7 @@ class GcfNodeAppOptions extends NodeAppOptions {
 
   /// Optional IP port (5000)
   final int? port;
+
   GcfNodeAppOptions(
       {this.projectId,
       super.packageTop,

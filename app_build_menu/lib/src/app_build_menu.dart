@@ -26,8 +26,8 @@ void gcfMenuAppContent({required GcfNodeAppOptions? options}) {
     item('build', () async {
       await builder.build();
     });
-    item('serve', () async {
-      await builder.serve();
+    item('serveFunctions', () async {
+      await builder.serveFunctions();
     });
     item('clean', () async {
       await builder.clean();
@@ -36,8 +36,15 @@ void gcfMenuAppContent({required GcfNodeAppOptions? options}) {
     item('build & serve', () async {
       await builder.buildAndServe();
     });
-    item('deployFunction', () async {
+    item('build & serve functions', () async {
+      await builder.buildAndServeFunctions();
+    });
+    item('deployFunctions', () async {
       await builder.deployFunctions();
+    });
+
+    item('build and deploy functions', () async {
+      await builder.buildAndDeployFunctions();
     });
   });
 }

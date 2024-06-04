@@ -108,13 +108,15 @@ Future<void> gcfNodePackageDeployFunctions(String path,
 Future<void> gcfNodePackageServeFunctions(String path,
     {String deployDirectory = 'deploy',
     String? projectId,
-    List<String>? functions}) async {
+    List<String>? functions,
+    int? port}) async {
   var shell = Shell(workingDirectory: join(path, deployDirectory));
 
   await shell.run(gcfNodePackageServeFunctionsCommand(
       deployDirectory: deployDirectory,
       projectId: projectId,
-      functions: functions));
+      functions: functions,
+      port: port));
 }
 
 // Bad name and implementation - to delete 2021-04-19
@@ -173,11 +175,21 @@ class GcfNodeAppBuilder {
         directory: options.srcDir, deployDirectory: options.deployDir);
   }
 
-  Future<void> serve() async {
-    await gcfNodePackageServe(options.packageTop,
-        directory: options.deployDir,
+  Future<void> serveFunctions({List<String>? functions}) async {
+    await gcfNodePackageServeFunctions(options.packageTop,
+        deployDirectory: options.deployDir,
         projectId: options.projectId,
-        port: options.port);
+        port: options.port,
+        functions: functions ?? options.functions);
+  }
+
+  Future<void> serve() async {
+    await gcfNodePackageServe(
+      options.packageTop,
+      directory: options.deployDir,
+      projectId: options.projectId,
+      port: options.port,
+    );
   }
 
   Future<void> buildAndServe() async {
@@ -186,6 +198,11 @@ class GcfNodeAppBuilder {
         deployDirectory: options.deployDir,
         projectId: options.projectId,
         port: options.port);
+  }
+
+  Future<void> buildAndServeFunctions({List<String>? functions}) async {
+    await build();
+    await serveFunctions(functions: functions);
   }
 
   Future<void> clean() async {
