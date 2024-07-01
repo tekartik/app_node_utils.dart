@@ -10,7 +10,7 @@ Future main(List<String> arguments) async {
 }
 
 void gcfMenuAppContent(
-    {List<GcfNodeAppBuilder>? builders, required GcfNodeAppOptions? options}) {
+    {List<GcfNodeAppBuilder>? builders, GcfNodeAppOptions? options}) {
   if (builders != null) {
     for (var builder in builders) {
       menu(
