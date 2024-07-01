@@ -158,9 +158,10 @@ String getDefaultProjectId() {
 
 /// New builder helper
 class GcfNodeAppBuilder {
+  final String? target;
   late final GcfNodeAppOptions options;
 
-  GcfNodeAppBuilder({GcfNodeAppOptions? options}) {
+  GcfNodeAppBuilder({GcfNodeAppOptions? options, this.target}) {
     this.options =
         options ?? GcfNodeAppOptions(projectId: getDefaultProjectId());
   }

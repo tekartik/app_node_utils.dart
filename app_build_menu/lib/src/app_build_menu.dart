@@ -9,8 +9,23 @@ Future main(List<String> arguments) async {
   mainMenuConsole(arguments, menuAppContent);
 }
 
-void gcfMenuAppContent({required GcfNodeAppOptions? options}) {
-  var builder = GcfNodeAppBuilder(options: options);
+void gcfMenuAppContent(
+    {List<GcfNodeAppBuilder>? builders, required GcfNodeAppOptions? options}) {
+  if (builders != null) {
+    for (var builder in builders) {
+      menu(
+          'target ${builder.target ?? '${builder.options.projectId} - ${basename(builder.options.srcDir)}'}',
+          () {
+        gcfMenuAppBuilderContent(builder: builder);
+      });
+    }
+  } else {
+    var builder = GcfNodeAppBuilder(options: options);
+    gcfMenuAppBuilderContent(builder: builder);
+  }
+}
+
+void gcfMenuAppBuilderContent({required GcfNodeAppBuilder builder}) {
   menu('npm', () {
     item('npm install', () async {
       await builder.npmInstall();
@@ -25,6 +40,9 @@ void gcfMenuAppContent({required GcfNodeAppOptions? options}) {
   menu('gcf_build', () {
     item('build', () async {
       await builder.build();
+    });
+    item('serve', () async {
+      await builder.serve();
     });
     item('serveFunctions', () async {
       await builder.serveFunctions();
