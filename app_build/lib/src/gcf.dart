@@ -137,16 +137,16 @@ Future gcfNodeCopyToDeploy(
 Future gcfNodePackageCopyToDeploy(String path,
     {String directory = 'bin', String deployDirectory = 'deploy'}) async {
   var src = File(join(path, 'build', directory, 'main.dart.js'));
+  var dstDir = join(path, deployDirectory, 'functions');
   Future copy() async {
-    var file =
-        await src.copy(join(path, '$deployDirectory/functions/index.js'));
+    var file = await src.copy(join(dstDir, 'index.js'));
     print('copied to $file ${file.statSync()}');
   }
 
   try {
     await copy();
   } catch (e) {
-    await Directory(deployDirectory).create(recursive: true);
+    await Directory(dstDir).create(recursive: true);
     await copy();
   }
 }
