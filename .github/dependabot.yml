@@ -3,30 +3,25 @@
 version: 2
 
 enable-beta-ecosystems: true
+
 updates:
   - package-ecosystem: "pub"
     directory: "app_build"
     schedule:
       interval: "monthly"
-
   - package-ecosystem: "pub"
     directory: "app_build_menu"
     schedule:
       interval: "monthly"
-
   - package-ecosystem: "pub"
     directory: "node_utils"
     schedule:
       interval: "monthly"
-
   - package-ecosystem: "pub"
     directory: "repo_support"
     schedule:
       interval: "monthly"
-
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
-    labels:
-      - autosubmit
