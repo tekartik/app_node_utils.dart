@@ -10,7 +10,6 @@ environment:
 dependencies:
   path:
   args:
-  dev_test: '>=0.16.2'
   dev_build: '>=0.16.5-6'
   process_run:
   tekartik_app_node_build:

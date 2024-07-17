@@ -1,1 +1,1 @@
-export 'package:dev_test/src/mixin/package.dart';
+export 'package:dev_build/src/mixin/package.dart';
