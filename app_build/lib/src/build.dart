@@ -27,13 +27,13 @@ node ${shellArgument(join(deployDirectory, '${basename ?? 'index'}.js'))}
 /// Clean node app
 Future nodePackageClean(String path, {String? deployDirectory}) async {
   deployDirectory ??= 'deploy';
-  print('deleting "build"');
+  stdout.writeln('deleting "build"');
   try {
     await Directory('build').delete(recursive: true);
   } catch (_) {}
 
   var indexJs = join(deployDirectory, 'index.js');
-  print('deleting "$indexJs"');
+  stderr.writeln('deleting "$indexJs"');
   try {
     await File(indexJs).delete();
   } catch (_) {}
@@ -49,7 +49,7 @@ Future nodePackageCopyToDeploy(String path,
   var src = File('build/$directory/${basename ?? 'main'}.dart.js');
   Future copy() async {
     var file = await src.copy('$deployDirectory/${basename ?? 'index'}.js');
-    print('copied to $file ${file.statSync()}');
+    stdout.writeln('copied to $file ${file.statSync()}');
   }
 
   try {

@@ -1,9 +1,7 @@
-// Firebase cloud function
-import 'dart:io';
-
 import 'package:path/path.dart';
 import 'package:process_run/shell.dart';
 import 'package:process_run/shell_run.dart';
+import 'package:process_run/stdio.dart';
 import 'package:tekartik_app_node_build/app_build.dart';
 
 import 'gcf_common.dart';
@@ -140,7 +138,7 @@ Future gcfNodePackageCopyToDeploy(String path,
   var dstDir = join(path, deployDirectory, 'functions');
   Future copy() async {
     var file = await src.copy(join(dstDir, 'index.js'));
-    print('copied to $file ${file.statSync()}');
+    stdout.writeln('copied to $file ${file.statSync()}');
   }
 
   try {

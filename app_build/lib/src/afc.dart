@@ -1,9 +1,8 @@
 /// Aliyun function compute
 library;
 
-import 'dart:io';
-
 import 'package:process_run/shell_run.dart';
+import 'package:process_run/stdio.dart';
 import 'package:tekartik_app_node_build/src/run.dart';
 
 /// Compile bin/main.dart to deploy/functions/index.js
@@ -25,7 +24,7 @@ Future afcNodeCopyToDeploy(
   var src = File('build/$directory/main.dart.js');
   Future copy() async {
     var file = await src.copy('$deployDirectory/index.js');
-    print('copied to $file ${file.statSync()}');
+    stdout.writeln('copied to $file ${file.statSync()}');
   }
 
   try {

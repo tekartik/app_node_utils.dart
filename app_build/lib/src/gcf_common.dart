@@ -36,14 +36,14 @@ class GcfNodeAppOptions extends NodeAppOptions {
   /// Optional IP port (5000)
   final int? port;
 
-  GcfNodeAppOptions(
-      {this.projectId,
-      super.packageTop,
-      String? deployDir,
-      super.srcDir,
-      this.port,
-      this.functions})
-      : super(deployDir: deployDir ?? gcfNodeAppDeployDirDefault);
+  GcfNodeAppOptions({
+    this.projectId,
+    super.packageTop,
+    String? deployDir,
+    super.srcDir,
+    this.port,
+    this.functions,
+  }) : super(deployDir: deployDir ?? gcfNodeAppDeployDirDefault);
 
   GcfNodeAppOptions copyWith({String? projectId, List<String>? functions}) {
     return GcfNodeAppOptions(

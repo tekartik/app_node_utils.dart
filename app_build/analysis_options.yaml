@@ -1,2 +1,6 @@
 # tekartik lints over dart lints for node apps
 include: package:tekartik_lints/strict.yaml
+
+linter:
+  rules:
+    avoid_print: true
