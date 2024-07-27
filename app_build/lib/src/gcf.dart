@@ -3,6 +3,8 @@ import 'package:process_run/shell.dart';
 import 'package:process_run/shell_run.dart';
 import 'package:process_run/stdio.dart';
 import 'package:tekartik_app_node_build/app_build.dart';
+import 'package:tekartik_build_node/build_node.dart';
+import 'package:tekartik_common_utils/common_utils_import.dart';
 
 import 'gcf_common.dart';
 
@@ -36,8 +38,12 @@ Future gcfNodeBuild(
 }
 
 Future gcfNodePackageBuild(String path,
-    {String directory = 'bin', String deployDirectory = 'deploy'}) async {
-  await nodePackageBuild(path, directory: directory);
+    {String directory = 'bin',
+    String deployDirectory = 'deploy',
+    bool? debug}) async {
+  await nodePackageCompileJs(path,
+      input: join(directory, 'main.dart'), debug: debug);
+
   await gcfNodePackageCopyToDeploy(path,
       directory: directory, deployDirectory: deployDirectory);
 }
