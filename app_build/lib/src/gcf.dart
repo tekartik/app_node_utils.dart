@@ -40,12 +40,18 @@ Future gcfNodeBuild(
 Future gcfNodePackageBuild(String path,
     {String directory = 'bin',
     String deployDirectory = 'deploy',
+
+    /// Default to main.dart inside [directory]
+    String? srcFile,
     bool? debug}) async {
+  srcFile ??= 'main.dart';
   await nodePackageCompileJs(path,
-      input: join(directory, 'main.dart'), debug: debug);
+      input: join(directory, srcFile), debug: debug);
 
   await gcfNodePackageCopyToDeploy(path,
-      directory: directory, deployDirectory: deployDirectory);
+      directory: directory,
+      deployDirectory: deployDirectory,
+      jsSrcFile: '${basename(srcFile)}.js');
 }
 
 Future gcfNodePackageNpmInstall(String path,
@@ -139,8 +145,10 @@ Future gcfNodeCopyToDeploy(
 
 /// Convert main.dart to index.js
 Future gcfNodePackageCopyToDeploy(String path,
-    {String directory = 'bin', String deployDirectory = 'deploy'}) async {
-  var src = File(join(path, 'build', directory, 'main.dart.js'));
+    {String directory = 'bin',
+    String deployDirectory = 'deploy',
+    String? jsSrcFile}) async {
+  var src = File(join(path, 'build', directory, jsSrcFile ?? 'main.dart.js'));
   var dstDir = join(path, deployDirectory, 'functions');
   Future copy() async {
     var file = await src.copy(join(dstDir, 'index.js'));
@@ -172,7 +180,9 @@ class GcfNodeAppBuilder {
 
   Future<void> build() async {
     await gcfNodePackageBuild(options.packageTop,
-        directory: options.srcDir, deployDirectory: options.deployDir);
+        directory: options.srcDir,
+        deployDirectory: options.deployDir,
+        srcFile: options.srcFile);
   }
 
   Future<void> copyToDeploy() async {

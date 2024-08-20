@@ -9,7 +9,11 @@ class NodeAppOptions {
   /// Typically 'bin' to 'node', default to 'bin'
   late final String srcDir;
 
-  NodeAppOptions({String? packageTop, String? deployDir, String? srcDir}) {
+  /// Default to main.dart, inside $srcDir
+  final String? srcFile;
+
+  NodeAppOptions(
+      {String? packageTop, String? deployDir, String? srcDir, this.srcFile}) {
     this.packageTop = packageTop ?? '.';
     this.deployDir = deployDir ?? 'deploy';
     this.srcDir = srcDir ?? 'bin';
