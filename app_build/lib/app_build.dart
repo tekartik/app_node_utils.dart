@@ -1,7 +1,7 @@
 /// Support for doing something awesome.
 ///
 /// More dartdocs go here.
-library tekartik_app_node_build.app_build;
+library;
 
 export 'package:tekartik_build_node/build_node.dart'
     show nodePackageBuild, nodePackageCheck, nodePackageRunTest;

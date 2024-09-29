@@ -1,4 +1,4 @@
-library tekartik_node_utils.console_node_js;
+library;
 
 import 'dart:js_interop';
 import 'package:tekartik_app_node_utils/src/console/console.dart';

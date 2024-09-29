@@ -35,6 +35,10 @@ dependencies:
       ref: dart3a
       path: js_utils_interop
 
+  tekartik_common_utils:
+    git:
+      url: https://github.com/tekartik/common_utils.dart
+      ref: dart3a
 dev_dependencies:
   test: '>=1.14.4'
   # Needed direct dependencies
