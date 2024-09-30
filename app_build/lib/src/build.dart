@@ -41,7 +41,7 @@ Future nodePackageClean(String path, {String? deployDirectory}) async {
 
 /// Copy main.dart.js to index.js
 ///
-/// if basename is specified copy <basename>.dart.js to deploy/<basename>.js
+/// if basename is specified copy `<basename>.dart.js` to `deploy/<basename>.js`
 Future nodePackageCopyToDeploy(String path,
     {String? directory, String? deployDirectory, String? basename}) async {
   directory ??= 'bin';
@@ -70,7 +70,7 @@ class NodeAppBuilder {
 
   /// Build main.dart.js and copy as index.js
   ///
-  /// if basename is specified, in this case <basename>.dart.js is copied to deploy/<basename>.js
+  /// if basename is specified, in this case `<basename>.dart.js` is copied to `deploy/<basename>.js`
   Future<void> build({String? basename}) async {
     await nodePackageBuild(options.packageTop, directory: options.srcDir);
     await copyToDeploy(basename: basename);
@@ -78,7 +78,7 @@ class NodeAppBuilder {
 
   /// Copy main.dart.js to deploy/index.js
   ///
-  /// if basename is specified, in this case <basename>.dart.js is copied to deploy/<basename>.js
+  /// if basename is specified, in this case `<basename>.dart.js` is copied to `deploy/<basename>.js`
   Future<void> copyToDeploy({String? basename}) async {
     await nodePackageCopyToDeploy(options.packageTop,
         directory: options.srcDir,
