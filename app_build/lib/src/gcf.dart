@@ -3,6 +3,7 @@ import 'package:process_run/shell.dart';
 import 'package:process_run/shell_run.dart';
 import 'package:process_run/stdio.dart';
 import 'package:tekartik_app_node_build/app_build.dart';
+import 'package:tekartik_app_node_build/gcf_build.dart';
 import 'package:tekartik_build_node/build_node.dart';
 import 'package:tekartik_common_utils/common_utils_import.dart';
 
@@ -169,7 +170,7 @@ String getDefaultProjectId() {
 }
 
 /// New builder helper
-class GcfNodeAppBuilder {
+class GcfNodeAppBuilder implements CommonAppBuilder {
   final String? target;
   late final GcfNodeAppOptions options;
 
@@ -250,4 +251,7 @@ class GcfNodeAppBuilder {
     await gcfNodePackageNpmUpgradeFirebaseAdmin(options.packageTop,
         deployDirectory: options.deployDir);
   }
+
+  @override
+  String get path => options.packageTop;
 }
