@@ -68,6 +68,7 @@ class NodeAppBuilder {
     this.options = options ?? NodeAppOptions();
   }
 
+  /// DEPRECATED use compile
   /// Build main.dart.js and copy as index.js
   ///
   /// if basename is specified, in this case `<basename>.dart.js` is copied to `deploy/<basename>.js`
@@ -86,16 +87,36 @@ class NodeAppBuilder {
         basename: basename);
   }
 
+  String get _srcFile => options.srcFile ?? 'main.dart';
+
   Future<void> run({String? basename}) async {
-    await copyToDeploy(basename: basename);
-    await nodePackageRun(options.packageTop, basename: basename);
+    var srcFile = _srcFile;
+    var fileBasename = basename ?? basenameWithoutExtension(srcFile);
+    await copyToDeploy(basename: fileBasename);
+    await nodePackageRun(options.packageTop,
+        deployDirectory: options.deployDir, basename: fileBasename);
   }
 
+  /// DEPRECATED use compile
   Future<void> buildAndRun({String? basename}) async {
     await nodePackageBuild(options.packageTop, directory: options.srcDir);
     await copyToDeploy(basename: basename);
     await nodePackageRun(options.packageTop,
         deployDirectory: options.deployDir, basename: basename);
+  }
+
+  /// Compile and run
+  Future<void> compileAndRun() async {
+    await compile();
+    await run();
+  }
+
+  Future<void> compile() async {
+    var srcFile = _srcFile;
+    var fileBasename = basenameWithoutExtension(srcFile);
+    await nodePackageCompileJs(options.packageTop,
+        input: join(options.srcDir, srcFile));
+    await copyToDeploy(basename: fileBasename);
   }
 
   Future<void> clean() async {

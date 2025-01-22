@@ -4,7 +4,11 @@
 library;
 
 export 'package:tekartik_build_node/build_node.dart'
-    show nodePackageBuild, nodePackageCheck, nodePackageRunTest;
+    show
+        nodePackageBuild,
+        nodePackageCheck,
+        nodePackageRunTest,
+        nodePackageCompileJs;
 export 'package:tekartik_build_node/package.dart'
     show nodePackageRunCi, NodePackageRunCiOptions;
 

@@ -13,3 +13,4 @@ build/
 doc/api/
 
 deploy/index.js
+deploy/main.js
