@@ -61,8 +61,5 @@ dev_dependencies:
       url: https://github.com/tekartik/build_node.dart
       path: packages/build_node
       ref: dart3a
-dependency_overrides:
-  tekartik_app_node_build:
-    path: ../app_build
-  tekartik_app_node_build_menu:
-    path: ../app_build_menu
+
+resolution: workspace
