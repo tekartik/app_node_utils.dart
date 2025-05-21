@@ -12,24 +12,37 @@ void main() {
       });
     });
     test('gcfNodePackageServeFunctionsCommand', () {
-      expect(gcfNodePackageServeFunctionsCommand(),
-          'firebase serve --only functions');
-      expect(gcfNodePackageServeFunctionsCommand(projectId: 'my_prj'),
-          'firebase --project my_prj serve --only functions');
       expect(
-          gcfNodePackageServeFunctionsCommand(
-              projectId: 'my_prj', functions: ['function1', 'function2']),
-          'firebase --project my_prj serve --only functions:function1,functions:function2');
+        gcfNodePackageServeFunctionsCommand(),
+        'firebase serve --only functions',
+      );
+      expect(
+        gcfNodePackageServeFunctionsCommand(projectId: 'my_prj'),
+        'firebase --project my_prj serve --only functions',
+      );
+      expect(
+        gcfNodePackageServeFunctionsCommand(
+          projectId: 'my_prj',
+          functions: ['function1', 'function2'],
+        ),
+        'firebase --project my_prj serve --only functions:function1,functions:function2',
+      );
     });
     test('gcfNodePackageDeployFunctionsCommand', () {
-      expect(gcfNodePackageDeployFunctionsCommand(),
-          'firebase deploy --only functions');
-      expect(gcfNodePackageDeployFunctionsCommand(projectId: 'my_prj'),
-          'firebase --project my_prj deploy --only functions');
       expect(
-          gcfNodePackageDeployFunctionsCommand(
-              functions: ['function1', 'function2']),
-          'firebase deploy --only functions:function1,functions:function2');
+        gcfNodePackageDeployFunctionsCommand(),
+        'firebase deploy --only functions',
+      );
+      expect(
+        gcfNodePackageDeployFunctionsCommand(projectId: 'my_prj'),
+        'firebase --project my_prj deploy --only functions',
+      );
+      expect(
+        gcfNodePackageDeployFunctionsCommand(
+          functions: ['function1', 'function2'],
+        ),
+        'firebase deploy --only functions:function1,functions:function2',
+      );
     });
   });
 }

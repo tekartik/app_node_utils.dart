@@ -9,15 +9,18 @@ Future main(List<String> arguments) async {
   mainMenuConsole(arguments, menuAppContent);
 }
 
-void gcfMenuAppContent(
-    {List<GcfNodeAppBuilder>? builders, GcfNodeAppOptions? options}) {
+void gcfMenuAppContent({
+  List<GcfNodeAppBuilder>? builders,
+  GcfNodeAppOptions? options,
+}) {
   if (builders != null) {
     for (var builder in builders) {
       menu(
-          'target ${builder.target ?? '${builder.options.projectId} - ${basename(builder.options.srcDir)}'}',
-          () {
-        gcfMenuAppBuilderContent(builder: builder);
-      });
+        'target ${builder.target ?? '${builder.options.projectId} - ${basename(builder.options.srcDir)}'}',
+        () {
+          gcfMenuAppBuilderContent(builder: builder);
+        },
+      );
     }
   } else {
     var builder = GcfNodeAppBuilder(options: options);
@@ -104,9 +107,12 @@ void menuAppContent({String path = '.'}) {
     });
 
     item('list sub projects', () async {
-      await recursivePackagesRun([path], action: (path) {
-        write('project: ${absolute(path)}');
-      });
+      await recursivePackagesRun(
+        [path],
+        action: (path) {
+          write('project: ${absolute(path)}');
+        },
+      );
     });
 
     item('run_ci', () async {
@@ -119,8 +125,10 @@ void menuAppContent({String path = '.'}) {
       await packageRunCi(path, options: PackageRunCiOptions(pubGetOnly: true));
     });
     item('pub_upgrade', () async {
-      await packageRunCi(path,
-          options: PackageRunCiOptions(pubUpgradeOnly: true));
+      await packageRunCi(
+        path,
+        options: PackageRunCiOptions(pubUpgradeOnly: true),
+      );
     });
   });
 }

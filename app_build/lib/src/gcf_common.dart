@@ -1,20 +1,22 @@
 import 'build_common.dart';
 
 /// Serve functions.
-String gcfNodePackageServeFunctionsCommand(
-    {String deployDirectory = 'deploy',
-    String? projectId,
-    List<String>? functions,
-    int? port}) {
+String gcfNodePackageServeFunctionsCommand({
+  String deployDirectory = 'deploy',
+  String? projectId,
+  List<String>? functions,
+  int? port,
+}) {
   return 'firebase${gcfNodePackageFirebaseArgProjectId(projectId)} serve'
       ' --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}'
       '${port == null ? '' : ' -p $port'}';
 }
 
-String gcfNodePackageDeployFunctionsCommand(
-    {String deployDirectory = 'deploy',
-    String? projectId,
-    List<String>? functions}) {
+String gcfNodePackageDeployFunctionsCommand({
+  String deployDirectory = 'deploy',
+  String? projectId,
+  List<String>? functions,
+}) {
   return 'firebase${gcfNodePackageFirebaseArgProjectId(projectId)} deploy --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}';
 }
 
@@ -46,15 +48,19 @@ class GcfNodeAppOptions extends NodeAppOptions {
     this.functions,
   }) : super(deployDir: deployDir ?? gcfNodeAppDeployDirDefault);
 
-  GcfNodeAppOptions copyWith(
-      {String? projectId, List<String>? functions, String? srcFile}) {
+  GcfNodeAppOptions copyWith({
+    String? projectId,
+    List<String>? functions,
+    String? srcFile,
+  }) {
     return GcfNodeAppOptions(
-        projectId: projectId ?? this.projectId,
-        functions: functions ?? this.functions,
-        port: port,
-        packageTop: packageTop,
-        deployDir: deployDir,
-        srcDir: srcDir,
-        srcFile: srcFile);
+      projectId: projectId ?? this.projectId,
+      functions: functions ?? this.functions,
+      port: port,
+      packageTop: packageTop,
+      deployDir: deployDir,
+      srcDir: srcDir,
+      srcFile: srcFile,
+    );
   }
 }

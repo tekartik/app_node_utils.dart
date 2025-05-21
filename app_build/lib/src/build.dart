@@ -15,8 +15,11 @@ pub run build_runner build --output=build/ -- -p node
 }
 
 /// Regular node app
-Future nodePackageRun(String path,
-    {String? deployDirectory, String? basename}) async {
+Future nodePackageRun(
+  String path, {
+  String? deployDirectory,
+  String? basename,
+}) async {
   deployDirectory ??= 'deploy';
   var shell = Shell(workingDirectory: path);
   await shell.run('''
@@ -42,8 +45,12 @@ Future nodePackageClean(String path, {String? deployDirectory}) async {
 /// Copy main.dart.js to index.js
 ///
 /// if basename is specified copy `<basename>.dart.js` to `deploy/<basename>.js`
-Future nodePackageCopyToDeploy(String path,
-    {String? directory, String? deployDirectory, String? basename}) async {
+Future nodePackageCopyToDeploy(
+  String path, {
+  String? directory,
+  String? deployDirectory,
+  String? basename,
+}) async {
   directory ??= 'bin';
   deployDirectory ??= 'deploy';
   var src = File('build/$directory/${basename ?? 'main'}.dart.js');
@@ -81,10 +88,12 @@ class NodeAppBuilder {
   ///
   /// if basename is specified, in this case `<basename>.dart.js` is copied to `deploy/<basename>.js`
   Future<void> copyToDeploy({String? basename}) async {
-    await nodePackageCopyToDeploy(options.packageTop,
-        directory: options.srcDir,
-        deployDirectory: options.deployDir,
-        basename: basename);
+    await nodePackageCopyToDeploy(
+      options.packageTop,
+      directory: options.srcDir,
+      deployDirectory: options.deployDir,
+      basename: basename,
+    );
   }
 
   String get _srcFile => options.srcFile ?? 'main.dart';
@@ -93,16 +102,22 @@ class NodeAppBuilder {
     var srcFile = _srcFile;
     var fileBasename = basename ?? basenameWithoutExtension(srcFile);
     await copyToDeploy(basename: fileBasename);
-    await nodePackageRun(options.packageTop,
-        deployDirectory: options.deployDir, basename: fileBasename);
+    await nodePackageRun(
+      options.packageTop,
+      deployDirectory: options.deployDir,
+      basename: fileBasename,
+    );
   }
 
   /// DEPRECATED use compile
   Future<void> buildAndRun({String? basename}) async {
     await nodePackageBuild(options.packageTop, directory: options.srcDir);
     await copyToDeploy(basename: basename);
-    await nodePackageRun(options.packageTop,
-        deployDirectory: options.deployDir, basename: basename);
+    await nodePackageRun(
+      options.packageTop,
+      deployDirectory: options.deployDir,
+      basename: basename,
+    );
   }
 
   /// Compile and run
@@ -114,8 +129,10 @@ class NodeAppBuilder {
   Future<void> compile() async {
     var srcFile = _srcFile;
     var fileBasename = basenameWithoutExtension(srcFile);
-    await nodePackageCompileJs(options.packageTop,
-        input: join(options.srcDir, srcFile));
+    await nodePackageCompileJs(
+      options.packageTop,
+      input: join(options.srcDir, srcFile),
+    );
     await copyToDeploy(basename: fileBasename);
   }
 

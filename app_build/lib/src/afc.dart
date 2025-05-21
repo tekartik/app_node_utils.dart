@@ -6,11 +6,15 @@ import 'package:process_run/stdio.dart';
 import 'package:tekartik_app_node_build/src/run.dart';
 
 /// Compile bin/main.dart to deploy/functions/index.js
-Future afcNodeBuild(
-    {String directory = 'bin', String deployDirectory = 'deploy'}) async {
+Future afcNodeBuild({
+  String directory = 'bin',
+  String deployDirectory = 'deploy',
+}) async {
   await nodeBuild(directory: directory);
   await afcNodeCopyToDeploy(
-      directory: directory, deployDirectory: deployDirectory);
+    directory: directory,
+    deployDirectory: deployDirectory,
+  );
 }
 
 Future afcNodeServe({String directory = 'deploy'}) async {
@@ -19,8 +23,10 @@ Future afcNodeServe({String directory = 'deploy'}) async {
 }
 
 /// Convert main.dart to index.js
-Future afcNodeCopyToDeploy(
-    {String directory = 'bin', String deployDirectory = 'deploy'}) async {
+Future afcNodeCopyToDeploy({
+  String directory = 'bin',
+  String deployDirectory = 'deploy',
+}) async {
   var src = File('build/$directory/main.dart.js');
   Future copy() async {
     var file = await src.copy('$deployDirectory/index.js');
@@ -43,8 +49,9 @@ class AfcDeployResult {
 }
 
 /// Deploy and return the result (including the function name)
-Future<AfcDeployResult> afcNodeDeploy(
-    {String deployDirectory = 'deploy'}) async {
+Future<AfcDeployResult> afcNodeDeploy({
+  String deployDirectory = 'deploy',
+}) async {
   var shell = Shell(workingDirectory: 'deploy');
   var lines = (await shell.run('fun deploy')).outLines;
   String? foundUrl;
@@ -58,6 +65,7 @@ Future<AfcDeployResult> afcNodeDeploy(
   }
   return AfcDeployResult._(url: foundUrl);
 }
+
 /*
 using template: template.yml
 using region: cn-shanghai
