@@ -1,7 +1,9 @@
-import 'dart:io';
+//import 'dart:io';
 
 import 'package:path/path.dart';
-import 'package:process_run/shell_run.dart';
+import 'package:process_run/shell.dart';
+import 'package:process_run/stdio.dart';
+//import 'package:dev_build/utils/shell_run.dart';
 import 'package:tekartik_app_node_build/app_build.dart';
 
 @Deprecated('Use [nodePackageBuild] instead')
@@ -15,13 +17,19 @@ pub run build_runner build --output=build/ -- -p node
 }
 
 /// Regular node app
+///
 Future nodePackageRun(
   String path, {
   String? deployDirectory,
   String? basename,
+  NodeAppRunOptions? runOptions,
 }) async {
   deployDirectory ??= 'deploy';
-  var shell = Shell(workingDirectory: path);
+  var shellOptions = ShellOptions(
+    stdin: runOptions?.stdin,
+    workingDirectory: path,
+  );
+  var shell = Shell(options: shellOptions);
   await shell.run('''
 node ${shellArgument(join(deployDirectory, '${basename ?? 'index'}.js'))}
   ''');
@@ -98,7 +106,7 @@ class NodeAppBuilder {
 
   String get _srcFile => options.srcFile ?? 'main.dart';
 
-  Future<void> run({String? basename}) async {
+  Future<void> run({String? basename, NodeAppRunOptions? runOptions}) async {
     var srcFile = _srcFile;
     var fileBasename = basename ?? basenameWithoutExtension(srcFile);
     await copyToDeploy(basename: fileBasename);
@@ -106,24 +114,29 @@ class NodeAppBuilder {
       options.packageTop,
       deployDirectory: options.deployDir,
       basename: fileBasename,
+      runOptions: runOptions,
     );
   }
 
   /// DEPRECATED use compile
-  Future<void> buildAndRun({String? basename}) async {
+  Future<void> buildAndRun({
+    String? basename,
+    NodeAppRunOptions? runOptions,
+  }) async {
     await nodePackageBuild(options.packageTop, directory: options.srcDir);
     await copyToDeploy(basename: basename);
     await nodePackageRun(
       options.packageTop,
       deployDirectory: options.deployDir,
       basename: basename,
+      runOptions: runOptions,
     );
   }
 
   /// Compile and run
-  Future<void> compileAndRun() async {
+  Future<void> compileAndRun({NodeAppRunOptions? runOptions}) async {
     await compile();
-    await run();
+    await run(runOptions: runOptions);
   }
 
   Future<void> compile() async {

@@ -21,5 +21,6 @@ export 'src/build.dart'
 export 'src/build_common.dart' show NodeAppOptions;
 export 'src/copy_to_deploy.dart' show nodeCopyToDeploy;
 export 'src/run.dart' show nodeBuild, nodeRun, nodeBuildAndRun, nodeRunTest;
+export 'src/run_options.dart' show NodeAppRunOptions;
 
 // TODO: Export any libraries intended for clients of this package.
