@@ -3,4 +3,4 @@ include: package:tekartik_lints/strict.yaml
 
 linter:
   rules:
-    avoid_print: true
+    - avoid_print
