@@ -239,6 +239,7 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
   }
 
   Future<void> build() async {
+    await generateVersionIfNeeded();
     await gcfNodePackageBuild(
       options.packageTop,
       directory: options.srcDir,
