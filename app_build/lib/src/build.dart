@@ -16,6 +16,16 @@ pub run build_runner build --output=build/ -- -p node
   await nodeCopyToDeploy(directory: directory);
 }
 
+/// Install node modules if needed
+Future nodePackagePathNpmInstall(String path, {bool force = false}) async {
+  //print('# ${File(join(path, deployDirectory, 'functions', 'package.json')).statSync()}');
+  if ((File(join(path, 'package.json')).existsSync())) {
+    if (force || !(Directory(join(path, 'node_modules')).existsSync())) {
+      await Shell(workingDirectory: path).run('npm install');
+    }
+  }
+}
+
 /// Regular node app
 ///
 Future nodePackageRun(
@@ -29,6 +39,7 @@ Future nodePackageRun(
     stdin: runOptions?.stdin,
     workingDirectory: path,
   );
+  await nodePackagePathNpmInstall(join(path, deployDirectory));
   var shell = Shell(options: shellOptions);
   await shell.run('''
 node ${shellArgument(join(deployDirectory, '${basename ?? 'index'}.js'))}

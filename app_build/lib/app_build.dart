@@ -14,6 +14,7 @@ export 'package:tekartik_build_node/package.dart'
 
 export 'src/build.dart'
     show
+        nodePackagePathNpmInstall,
         nodePackageRun,
         nodePackageCopyToDeploy,
         nodePackageClean,
