@@ -14,18 +14,18 @@ void main() {
     test('gcfNodePackageServeFunctionsCommand', () {
       expect(
         gcfNodePackageServeFunctionsCommand(),
-        'firebase serve --only functions',
+        'firebase emulators:start --only functions',
       );
       expect(
         gcfNodePackageServeFunctionsCommand(projectId: 'my_prj'),
-        'firebase --project my_prj serve --only functions',
+        'firebase --project my_prj emulators:start --only functions',
       );
       expect(
         gcfNodePackageServeFunctionsCommand(
           projectId: 'my_prj',
           functions: ['function1', 'function2'],
         ),
-        'firebase --project my_prj serve --only functions:function1,functions:function2',
+        'firebase --project my_prj emulators:start --only functions:function1,functions:function2',
       );
     });
     test('gcfNodePackageDeployFunctionsCommand', () {
