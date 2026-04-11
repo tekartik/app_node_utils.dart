@@ -7,7 +7,7 @@ String gcfNodePackageServeFunctionsCommand({
   List<String>? functions,
   int? port,
 }) {
-  return 'firebase${gcfNodePackageFirebaseArgProjectId(projectId)} serve'
+  return 'firebase${gcfNodePackageFirebaseArgProjectId(projectId)} emulators:start'
       ' --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}'
       '${port == null ? '' : ' -p $port'}';
 }
