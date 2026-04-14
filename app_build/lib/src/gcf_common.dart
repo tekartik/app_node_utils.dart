@@ -42,7 +42,7 @@ class GcfNodeAppOptions extends NodeAppOptions {
 
   /// Optional IP port (5001)
   final int? port;
-  
+
   /// Optional region for setting artifact policy
   final String? region;
 
