@@ -10,6 +10,7 @@ import 'node_support.dart';
 
 bool _checked = false;
 
+/// Validates the current package before running node-related commands.
 Future nodeCheck() async {
   if (!_checked) {
     _checked = true;
@@ -19,6 +20,7 @@ Future nodeCheck() async {
   }
 }
 
+/// Builds the node target for the given source directory.
 Future nodeBuild({String directory = 'bin'}) async {
   await nodeCheck();
   await build.nodeBuild(directory: directory);
@@ -30,12 +32,14 @@ Future nodePackageBuild({String directory = 'bin'}) async {
   await build.nodeBuild(directory: directory);
 }*/
 
+/// Builds the node target, copies it to deploy, and runs it.
 Future nodeBuildAndRun({String directory = 'bin'}) async {
   await nodeBuild(directory: directory);
   await nodeCopyToDeploy(directory: directory);
   await nodeRun(directory: directory);
 }
 
+/// Runs the generated deploy entrypoint with Node.js.
 Future nodeRun({String directory = 'bin'}) async {
   var shell = Shell();
   await shell.run('''
@@ -43,6 +47,7 @@ node deploy/index.js
   ''');
 }
 
+/// Runs the package tests on the Node.js platform.
 Future nodeRunTest() async {
   await nodeCheck();
   await nodeTestCheck('.');

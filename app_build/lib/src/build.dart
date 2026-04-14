@@ -6,6 +6,7 @@ import 'package:process_run/stdio.dart';
 //import 'package:dev_build/utils/shell_run.dart';
 import 'package:tekartik_app_node_build/app_build.dart';
 
+/// Deprecated legacy build entrypoint.
 @Deprecated('Use [nodePackageBuild] instead')
 Future build({String directory = 'bin'}) async {
   var shell = Shell();
@@ -88,8 +89,10 @@ Future nodePackageCopyToDeploy(
 
 /// New builder helper
 class NodeAppBuilder {
+  /// Builder configuration.
   late final NodeAppOptions options;
 
+  /// Creates a builder with the provided options.
   NodeAppBuilder({NodeAppOptions? options}) {
     this.options = options ?? NodeAppOptions();
   }
@@ -117,6 +120,7 @@ class NodeAppBuilder {
 
   String get _srcFile => options.srcFile ?? 'main.dart';
 
+  /// Copies the compiled app and runs it with Node.js.
   Future<void> run({String? basename, NodeAppRunOptions? runOptions}) async {
     var srcFile = _srcFile;
     var fileBasename = basename ?? basenameWithoutExtension(srcFile);
@@ -150,6 +154,7 @@ class NodeAppBuilder {
     await run(runOptions: runOptions);
   }
 
+  /// Compiles the configured source file and updates the deploy output.
   Future<void> compile() async {
     var srcFile = _srcFile;
     var fileBasename = basenameWithoutExtension(srcFile);
@@ -160,6 +165,7 @@ class NodeAppBuilder {
     await copyToDeploy(basename: fileBasename);
   }
 
+  /// Removes generated build and deploy artifacts.
   Future<void> clean() async {
     await nodePackageClean(options.packageTop);
   }

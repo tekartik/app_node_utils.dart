@@ -1,6 +1,7 @@
 import 'build_common.dart';
 
 /// Serve functions.
+/// Builds the Firebase emulators command used to serve selected functions.
 String gcfNodePackageServeFunctionsCommand({
   String deployDirectory = 'deploy',
   String? projectId,
@@ -12,6 +13,7 @@ String gcfNodePackageServeFunctionsCommand({
       '${port == null ? '' : ' -p $port'}';
 }
 
+/// Builds the Firebase deploy command used to deploy selected functions.
 String gcfNodePackageDeployFunctionsCommand({
   String deployDirectory = 'deploy',
   String? projectId,
@@ -20,6 +22,7 @@ String gcfNodePackageDeployFunctionsCommand({
   return 'firebase${gcfNodePackageFirebaseArgProjectId(projectId)} deploy --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}';
 }
 
+/// Returns the optional Firebase CLI project argument.
 String gcfNodePackageFirebaseArgProjectId(String? projectId) =>
     projectId == null ? '' : ' --project $projectId';
 
@@ -33,11 +36,17 @@ const gcfNodeAppDeployDirDefault = 'deploy';
 class GcfNodeAppOptions extends NodeAppOptions {
   /// Recommended.
   final String? projectId;
+
+  /// Restricts operations to the listed function names.
   final List<String>? functions;
 
-  /// Optional IP port (5000)
+  /// Optional IP port (5001)
   final int? port;
+  
+  /// Optional region for setting artifact policy
+  final String? region;
 
+  /// Creates Google Cloud Function node app options.
   GcfNodeAppOptions({
     this.projectId,
     super.packageTop,
@@ -46,21 +55,29 @@ class GcfNodeAppOptions extends NodeAppOptions {
     super.srcFile,
     this.port,
     this.functions,
+    this.region,
   }) : super(deployDir: deployDir ?? gcfNodeAppDeployDirDefault);
 
+  /// Returns a copy of these options with the provided overrides.
   GcfNodeAppOptions copyWith({
     String? projectId,
     List<String>? functions,
     String? srcFile,
+    String? packageTop,
+    String? srcDir,
+    String? deployDir,
+    int? port,
+    String? region,
   }) {
     return GcfNodeAppOptions(
       projectId: projectId ?? this.projectId,
       functions: functions ?? this.functions,
-      port: port,
-      packageTop: packageTop,
-      deployDir: deployDir,
-      srcDir: srcDir,
-      srcFile: srcFile,
+      port: port ?? this.port,
+      region: region ?? this.region,
+      packageTop: packageTop ?? this.packageTop,
+      deployDir: deployDir ?? this.deployDir,
+      srcDir: srcDir ?? this.srcDir,
+      srcFile: srcFile ?? this.srcFile,
     );
   }
 }

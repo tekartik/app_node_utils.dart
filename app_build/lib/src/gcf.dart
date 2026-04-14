@@ -1,3 +1,4 @@
+import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:process_run/shell.dart';
 import 'package:process_run/shell_run.dart';
@@ -9,6 +10,7 @@ import 'package:tekartik_common_utils/common_utils_import.dart';
 import 'gcf_common.dart';
 
 /// Compile bin/main.dart to deploy/functions/index.js
+/// Builds the current package and starts the local Firebase emulator.
 Future gcfNodeBuildAndServe({
   String directory = 'bin',
   String deployDirectory = 'deploy',
@@ -22,6 +24,7 @@ Future gcfNodeBuildAndServe({
   );
 }
 
+/// Builds a package and starts the local Firebase emulator.
 Future gcfNodePackageBuildAndServe(
   String path, {
   String directory = 'bin',
@@ -42,6 +45,7 @@ Future gcfNodePackageBuildAndServe(
   );
 }
 
+/// Deprecated legacy GCF build entrypoint.
 @Deprecated('Use gcfNodePackageBuild')
 Future gcfNodeBuild({
   String directory = 'bin',
@@ -54,6 +58,7 @@ Future gcfNodeBuild({
   );
 }
 
+/// Compiles a package entrypoint and copies it to the functions deploy folder.
 Future gcfNodePackageBuild(
   String path, {
   String directory = 'bin',
@@ -78,6 +83,7 @@ Future gcfNodePackageBuild(
   );
 }
 
+/// Installs npm dependencies for the generated Firebase functions package.
 Future gcfNodePackageNpmInstall(
   String path, {
   bool force = false,
@@ -98,6 +104,7 @@ Future gcfNodePackageNpmInstall(
   }
 }
 
+/// Upgrades `firebase-functions` in the generated Firebase functions package.
 Future gcfNodePackageNpmUpgrade(
   String path, {
   String deployDirectory = 'deploy',
@@ -112,6 +119,7 @@ Future gcfNodePackageNpmUpgrade(
   }
 }
 
+/// Upgrades `firebase-admin` in the generated Firebase functions package.
 Future gcfNodePackageNpmUpgradeFirebaseAdmin(
   String path, {
   String deployDirectory = 'deploy',
@@ -126,10 +134,12 @@ Future gcfNodePackageNpmUpgradeFirebaseAdmin(
   }
 }
 
+/// Serves the current package with the Firebase CLI.
 Future gcfNodeServe({String directory = 'deploy', String? projectId}) async {
   await gcfNodePackageServe('.', directory: directory);
 }
 
+/// Serves a built package with the Firebase CLI.
 Future gcfNodePackageServe(
   String path, {
   String directory = 'deploy',
@@ -182,6 +192,7 @@ Future<void> gcfNodePackageServeFunctions(
   );
 }
 
+/// Deprecated legacy serve entrypoint.
 // Bad name and implementation - to delete 2021-04-19
 @Deprecated('Misnamed since this actually serve')
 Future gcfNodeCreate({String directory = 'deploy'}) async {
@@ -190,6 +201,7 @@ Future gcfNodeCreate({String directory = 'deploy'}) async {
 }
 
 /// Convert main.dart to index.js
+/// Copies the current package build output into the functions deploy folder.
 Future gcfNodeCopyToDeploy({
   String directory = 'bin',
   String deployDirectory = 'deploy',
@@ -202,6 +214,7 @@ Future gcfNodeCopyToDeploy({
 }
 
 /// Convert main.dart to index.js
+/// Copies a package build output into the functions deploy folder.
 Future gcfNodePackageCopyToDeploy(
   String path, {
   String directory = 'bin',
@@ -223,6 +236,7 @@ Future gcfNodePackageCopyToDeploy(
   }
 }
 
+/// Returns the default Firebase project id from the environment.
 String getDefaultProjectId() {
   return ShellEnvironment().vars['TEKARTIK_FIREBASE_PROJECT_ID'] ??
       '-unset-project-id-';
@@ -230,14 +244,28 @@ String getDefaultProjectId() {
 
 /// New builder helper
 class GcfNodeAppBuilder implements CommonAppBuilder {
+  /// Optional generation target used by callers integrating with codegen.
   final String? target;
+
+  /// Builder configuration.
   late final GcfNodeAppOptions options;
 
+  /// Absolute path to the deploy directory.
+  String get deployFullPath {
+    if (p.isAbsolute(options.deployDir)) {
+      return options.deployDir;
+    } else {
+      return join(options.packageTop, options.deployDir);
+    }
+  }
+
+  /// Creates a builder with Google Cloud Function defaults.
   GcfNodeAppBuilder({GcfNodeAppOptions? options, this.target}) {
     this.options =
         options ?? GcfNodeAppOptions(projectId: getDefaultProjectId());
   }
 
+  /// Builds the configured function package.
   Future<void> build() async {
     await generateVersionIfNeeded();
     await gcfNodePackageBuild(
@@ -248,6 +276,7 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
     );
   }
 
+  /// Copies the compiled output to the deploy directory.
   Future<void> copyToDeploy() async {
     await gcfNodePackageCopyToDeploy(
       options.packageTop,
@@ -256,6 +285,7 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
     );
   }
 
+  /// Serves only the configured functions with the Firebase emulator.
   Future<void> serveFunctions({List<String>? functions}) async {
     await gcfNodePackageServeFunctions(
       options.packageTop,
@@ -266,6 +296,7 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
     );
   }
 
+  /// Serves the full deploy directory with the Firebase CLI.
   Future<void> serve() async {
     await gcfNodePackageServe(
       options.packageTop,
@@ -275,6 +306,7 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
     );
   }
 
+  /// Builds the package and immediately starts the Firebase emulator.
   Future<void> buildAndServe() async {
     await gcfNodePackageBuildAndServe(
       options.packageTop,
@@ -285,20 +317,24 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
     );
   }
 
+  /// Builds the package and serves only the configured functions.
   Future<void> buildAndServeFunctions({List<String>? functions}) async {
     await build();
     await serveFunctions(functions: functions);
   }
 
+  /// Removes generated build and deploy artifacts.
   Future<void> clean() async {
     await nodePackageClean(options.packageTop);
   }
 
+  /// Builds the package and deploys the configured functions.
   Future<void> buildAndDeployFunctions({List<String>? functions}) async {
     await build();
     await deployFunctions(functions: functions);
   }
 
+  /// Deploys the configured functions with the Firebase CLI.
   Future<void> deployFunctions({List<String>? functions}) async {
     await gcfNodePackageDeployFunctions(
       options.packageTop,
@@ -308,6 +344,7 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
     );
   }
 
+  /// Installs npm dependencies for the generated functions package.
   Future<void> npmInstall() async {
     await gcfNodePackageNpmInstall(
       options.packageTop,
@@ -315,6 +352,7 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
     );
   }
 
+  /// Upgrades `firebase-functions` in the generated functions package.
   Future<void> npmUpgrade() async {
     await gcfNodePackageNpmUpgrade(
       options.packageTop,
@@ -322,6 +360,7 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
     );
   }
 
+  /// Upgrades `firebase-admin` in the generated functions package.
   Future<void> npmUpgradeFirebaseAdmin() async {
     await gcfNodePackageNpmUpgradeFirebaseAdmin(
       options.packageTop,
@@ -330,5 +369,6 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
   }
 
   @override
+  /// Root package path for this builder.
   String get path => options.packageTop;
 }

@@ -1,6 +1,7 @@
 import 'package:dev_build/build_support.dart';
 import 'package:dev_build/menu/menu_io.dart';
 import 'package:dev_build/package.dart';
+import 'package:dev_build/shell.dart';
 import 'package:path/path.dart';
 import 'package:tekartik_app_node_build/app_build.dart';
 import 'package:tekartik_app_node_build/gcf_build.dart';
@@ -9,6 +10,7 @@ Future main(List<String> arguments) async {
   mainMenuConsole(arguments, menuAppContent);
 }
 
+/// gcf Menu
 void gcfMenuAppContent({
   List<GcfNodeAppBuilder>? builders,
   GcfNodeAppOptions? options,
@@ -28,6 +30,7 @@ void gcfMenuAppContent({
   }
 }
 
+/// gcf build menu
 void gcfMenuAppBuilderContent({required GcfNodeAppBuilder builder}) {
   menu('npm', () {
     item('npm install', () async {
@@ -67,9 +70,19 @@ void gcfMenuAppBuilderContent({required GcfNodeAppBuilder builder}) {
     item('build and deploy functions', () async {
       await builder.buildAndDeployFunctions();
     });
+    menu('setup once', () {
+      item('set 7 days artifacts deletion', () async {
+        var shell = Shell(workingDirectory: builder.deployFullPath);
+        await shell.run(
+          'firebase --project ${builder.options.projectId} functions:artifacts:setpolicy --days 7'
+          '${builder.options.region != null ? ' --location ${builder.options.region}' : ''}',
+        );
+      });
+    });
   });
 }
 
+/// node build menu
 void nodeMenuAppContent({required NodeAppOptions options}) {
   var builder = NodeAppBuilder(options: options);
   menu('node_build', () {
@@ -89,6 +102,7 @@ void nodeMenuAppContent({required NodeAppOptions options}) {
   });
 }
 
+/// menu
 void menuAppContent({String path = '.'}) {
   Map pubspec;
   var checkPubspec = () async {

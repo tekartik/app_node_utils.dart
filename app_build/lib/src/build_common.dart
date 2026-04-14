@@ -12,6 +12,7 @@ class NodeAppOptions {
   /// Default to main.dart, inside $srcDir
   final String? srcFile;
 
+  /// Creates node app options with defaults for a single-package app.
   NodeAppOptions({
     String? packageTop,
     String? deployDir,

@@ -17,6 +17,7 @@ Future afcNodeBuild({
   );
 }
 
+/// Serve the deployed Aliyun Function Compute project locally.
 Future afcNodeServe({String directory = 'deploy'}) async {
   var shell = Shell(workingDirectory: directory);
   await shell.run('firebase serve');
@@ -41,10 +42,12 @@ Future afcNodeCopyToDeploy({
   }
 }
 
+/// Result returned by an AFC deploy operation.
 class AfcDeployResult {
-  // Function url
+  /// Public URL exposed for the deployed function, when available.
   final String? url;
 
+  /// Creates a deploy result.
   AfcDeployResult._({this.url});
 }
 
