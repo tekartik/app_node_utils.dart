@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:stack_trace/stack_trace.dart';
 import 'package:tekartik_app_node_utils/node_utils.dart';
 // ignore: depend_on_referenced_packages
