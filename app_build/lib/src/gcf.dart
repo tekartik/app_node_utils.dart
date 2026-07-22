@@ -223,6 +223,7 @@ Future gcfNodePackageCopyToDeploy(
 }) async {
   var src = File(join(path, 'build', directory, jsSrcFile ?? 'main.dart.js'));
   var dstDir = join(path, deployDirectory, 'functions');
+
   Future copy() async {
     var file = await src.copy(join(dstDir, 'index.js'));
     stdout.writeln('copied to $file ${file.statSync()}');
@@ -232,6 +233,7 @@ Future gcfNodePackageCopyToDeploy(
     await copy();
   } catch (e) {
     await Directory(dstDir).create(recursive: true);
+
     await copy();
   }
 }
@@ -320,6 +322,7 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
   /// Builds the package and serves only the configured functions.
   Future<void> buildAndServeFunctions({List<String>? functions}) async {
     await build();
+
     await serveFunctions(functions: functions);
   }
 
@@ -331,6 +334,7 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
   /// Builds the package and deploys the configured functions.
   Future<void> buildAndDeployFunctions({List<String>? functions}) async {
     await build();
+
     await deployFunctions(functions: functions);
   }
 

@@ -26,6 +26,7 @@ void gcfMenuAppContent({
     }
   } else {
     var builder = GcfNodeAppBuilder(options: options);
+
     gcfMenuAppBuilderContent(builder: builder);
   }
 }
@@ -36,23 +37,29 @@ void gcfMenuAppBuilderContent({required GcfNodeAppBuilder builder}) {
     item('npm install', () async {
       await builder.npmInstall();
     });
+
     item('npm upgrade firebase-functions', () async {
       await builder.npmUpgrade();
     });
+
     item('npm upgrade firebase-admin', () async {
       await builder.npmUpgrade();
     });
   });
+
   menu('gcf_build', () {
     item('build', () async {
       await builder.build();
     });
+
     item('serve', () async {
       await builder.serve();
     });
+
     item('serveFunctions', () async {
       await builder.serveFunctions();
     });
+
     item('clean', () async {
       await builder.clean();
     });
@@ -60,9 +67,11 @@ void gcfMenuAppBuilderContent({required GcfNodeAppBuilder builder}) {
     item('build & serve', () async {
       await builder.buildAndServe();
     });
+
     item('build & serve functions', () async {
       await builder.buildAndServeFunctions();
     });
+
     item('deployFunctions', () async {
       await builder.deployFunctions();
     });
@@ -70,6 +79,7 @@ void gcfMenuAppBuilderContent({required GcfNodeAppBuilder builder}) {
     item('build and deploy functions', () async {
       await builder.buildAndDeployFunctions();
     });
+
     menu('setup once', () {
       item('set 7 days artifacts deletion', () async {
         var shell = Shell(workingDirectory: builder.deployFullPath);
@@ -85,13 +95,16 @@ void gcfMenuAppBuilderContent({required GcfNodeAppBuilder builder}) {
 /// node build menu
 void nodeMenuAppContent({required NodeAppOptions options}) {
   var builder = NodeAppBuilder(options: options);
+
   menu('node_build', () {
     item('build', () async {
       await builder.build();
     });
+
     item('run', () async {
       await builder.run();
     });
+
     item('clean', () async {
       await builder.clean();
     });
@@ -117,6 +130,7 @@ void menuAppContent({String path = '.'}) {
     enter(() async {
       write('App path: ${absolute(path)}');
       var pubspec = await checkPubspec;
+
       write('Package: ${pubspec['name']}');
     });
 
@@ -132,12 +146,15 @@ void menuAppContent({String path = '.'}) {
     item('run_ci', () async {
       await packageRunCi(path);
     });
+
     item('run_ci (node)', () async {
       await nodePackageRunCi(path);
     });
+
     item('pub_get', () async {
       await packageRunCi(path, options: PackageRunCiOptions(pubGetOnly: true));
     });
+
     item('pub_upgrade', () async {
       await packageRunCi(
         path,

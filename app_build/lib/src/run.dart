@@ -35,7 +35,9 @@ Future nodePackageBuild({String directory = 'bin'}) async {
 /// Builds the node target, copies it to deploy, and runs it.
 Future nodeBuildAndRun({String directory = 'bin'}) async {
   await nodeBuild(directory: directory);
+
   await nodeCopyToDeploy(directory: directory);
+
   await nodeRun(directory: directory);
 }
 
@@ -50,6 +52,7 @@ node deploy/index.js
 /// Runs the package tests on the Node.js platform.
 Future nodeRunTest() async {
   await nodeCheck();
+
   await nodeTestCheck('.');
   var shell = Shell();
   await shell.run('dart pub run test -p node');

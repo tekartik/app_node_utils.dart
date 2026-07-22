@@ -1,5 +1,4 @@
 /// Universal platform
-///
 library;
 
 export 'src/console/console.dart' show console;

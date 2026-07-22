@@ -14,6 +14,7 @@ Future build({String directory = 'bin'}) async {
 # pub run build_runner build --output=$directory:build/$directory -- -p node
 pub run build_runner build --output=build/ -- -p node
 ''');
+
   await nodeCopyToDeploy(directory: directory);
 }
 
@@ -28,7 +29,6 @@ Future nodePackagePathNpmInstall(String path, {bool force = false}) async {
 }
 
 /// Regular node app
-///
 Future nodePackageRun(
   String path, {
   String? deployDirectory,
@@ -40,6 +40,7 @@ Future nodePackageRun(
     stdin: runOptions?.stdin,
     workingDirectory: path,
   );
+
   await nodePackagePathNpmInstall(join(path, deployDirectory));
   var shell = Shell(options: shellOptions);
   await shell.run('''
@@ -74,6 +75,7 @@ Future nodePackageCopyToDeploy(
   directory ??= 'bin';
   deployDirectory ??= 'deploy';
   var src = File('build/$directory/${basename ?? 'main'}.dart.js');
+
   Future copy() async {
     var file = await src.copy('$deployDirectory/${basename ?? 'index'}.js');
     stdout.writeln('copied to $file ${file.statSync()}');
@@ -83,6 +85,7 @@ Future nodePackageCopyToDeploy(
     await copy();
   } catch (e) {
     await Directory(deployDirectory).create(recursive: true);
+
     await copy();
   }
 }
@@ -103,6 +106,7 @@ class NodeAppBuilder {
   /// if basename is specified, in this case `<basename>.dart.js` is copied to `deploy/<basename>.js`
   Future<void> build({String? basename}) async {
     await nodePackageBuild(options.packageTop, directory: options.srcDir);
+
     await copyToDeploy(basename: basename);
   }
 
@@ -124,6 +128,7 @@ class NodeAppBuilder {
   Future<void> run({String? basename, NodeAppRunOptions? runOptions}) async {
     var srcFile = _srcFile;
     var fileBasename = basename ?? basenameWithoutExtension(srcFile);
+
     await copyToDeploy(basename: fileBasename);
     await nodePackageRun(
       options.packageTop,
@@ -139,6 +144,7 @@ class NodeAppBuilder {
     NodeAppRunOptions? runOptions,
   }) async {
     await nodePackageBuild(options.packageTop, directory: options.srcDir);
+
     await copyToDeploy(basename: basename);
     await nodePackageRun(
       options.packageTop,
@@ -151,6 +157,7 @@ class NodeAppBuilder {
   /// Compile and run
   Future<void> compileAndRun({NodeAppRunOptions? runOptions}) async {
     await compile();
+
     await run(runOptions: runOptions);
   }
 
@@ -162,6 +169,7 @@ class NodeAppBuilder {
       options.packageTop,
       input: join(options.srcDir, srcFile),
     );
+
     await copyToDeploy(basename: fileBasename);
   }
 

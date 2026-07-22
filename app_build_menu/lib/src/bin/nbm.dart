@@ -16,6 +16,7 @@ void nbm(List<String> arguments) {
   if (appPath.isEmpty) {
     appPath = [Directory.current.path];
   }
+
   mainMenuConsole(appPath.sublist(1), () {
     menuAppContent(path: appPath.first);
   });

@@ -29,6 +29,7 @@ Future afcNodeCopyToDeploy({
   String deployDirectory = 'deploy',
 }) async {
   var src = File('build/$directory/main.dart.js');
+
   Future copy() async {
     var file = await src.copy('$deployDirectory/index.js');
     stdout.writeln('copied to $file ${file.statSync()}');
@@ -38,6 +39,7 @@ Future afcNodeCopyToDeploy({
     await copy();
   } catch (e) {
     await Directory(deployDirectory).create(recursive: true);
+
     await copy();
   }
 }
