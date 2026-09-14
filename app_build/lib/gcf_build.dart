@@ -4,5 +4,9 @@ export 'src/gcf.dart'
     show
         gcfNodePackageDeployFunctions,
         gcfNodePackageServeFunctions,
+        gcfNodePackageNpmCheck,
+        gcfNodePackageNpmInstallIfNeeded,
         GcfNodeAppBuilder;
 export 'src/gcf_common.dart' show GcfNodeAppOptions;
+export 'src/npm_check.dart'
+    show NodePackageNpmCheckResult, NodePackageNpmDependencyCheck;

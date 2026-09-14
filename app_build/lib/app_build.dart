@@ -21,6 +21,12 @@ export 'src/build.dart'
         NodeAppBuilder;
 export 'src/build_common.dart' show NodeAppOptions;
 export 'src/copy_to_deploy.dart' show nodeCopyToDeploy;
+export 'src/npm_check.dart'
+    show
+        NodePackageNpmCheckResult,
+        NodePackageNpmDependencyCheck,
+        nodePackageNpmCheck,
+        nodePackageNpmInstallIfNeeded;
 export 'src/run.dart' show nodeBuild, nodeRun, nodeBuildAndRun, nodeRunTest;
 export 'src/run_options.dart' show NodeAppRunOptions;
 

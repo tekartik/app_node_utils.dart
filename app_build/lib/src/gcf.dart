@@ -104,6 +104,47 @@ Future gcfNodePackageNpmInstall(
   }
 }
 
+/// The generated Firebase functions package path (`deploy/functions`).
+String gcfNodePackageFunctionsPath(
+  String path, {
+  String deployDirectory = 'deploy',
+}) => join(path, deployDirectory, 'functions');
+
+/// Checks the npm dependencies of the generated Firebase functions package
+/// against `package.json` and the optional [minConstraints]
+/// (`{'firebase-admin': '^14.4.0'}`), see [nodePackageNpmCheck].
+Future<NodePackageNpmCheckResult> gcfNodePackageNpmCheck(
+  String path, {
+  String deployDirectory = 'deploy',
+  Map<String, String>? minConstraints,
+  List<String>? requiredDependencies,
+}) => nodePackageNpmCheck(
+  gcfNodePackageFunctionsPath(path, deployDirectory: deployDirectory),
+  minConstraints: minConstraints,
+  requiredDependencies: requiredDependencies,
+);
+
+/// Checks the npm dependencies of the generated Firebase functions package
+/// and runs `npm install` if the installed versions are not up to date with
+/// `package.json` and the optional [minConstraints], see
+/// [nodePackageNpmInstallIfNeeded].
+Future<NodePackageNpmCheckResult> gcfNodePackageNpmInstallIfNeeded(
+  String path, {
+  String deployDirectory = 'deploy',
+  Map<String, String>? minConstraints,
+  List<String>? requiredDependencies,
+  bool updatePackageJson = false,
+  bool force = false,
+  bool verbose = false,
+}) => nodePackageNpmInstallIfNeeded(
+  gcfNodePackageFunctionsPath(path, deployDirectory: deployDirectory),
+  minConstraints: minConstraints,
+  requiredDependencies: requiredDependencies,
+  updatePackageJson: updatePackageJson,
+  force: force,
+  verbose: verbose,
+);
+
 /// Upgrades `firebase-functions` in the generated Firebase functions package.
 Future gcfNodePackageNpmUpgrade(
   String path, {
@@ -355,6 +396,37 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
       deployDirectory: options.deployDir,
     );
   }
+
+  /// Checks the npm dependencies of the generated functions package against
+  /// `package.json` and the optional [minConstraints], nothing is installed.
+  Future<NodePackageNpmCheckResult> npmCheck({
+    Map<String, String>? minConstraints,
+    List<String>? requiredDependencies,
+  }) => gcfNodePackageNpmCheck(
+    options.packageTop,
+    deployDirectory: options.deployDir,
+    minConstraints: minConstraints,
+    requiredDependencies: requiredDependencies,
+  );
+
+  /// Checks the npm dependencies of the generated functions package and runs
+  /// `npm install` if the installed versions are not up to date with
+  /// `package.json` and the optional [minConstraints].
+  Future<NodePackageNpmCheckResult> npmInstallIfNeeded({
+    Map<String, String>? minConstraints,
+    List<String>? requiredDependencies,
+    bool updatePackageJson = false,
+    bool force = false,
+    bool verbose = false,
+  }) => gcfNodePackageNpmInstallIfNeeded(
+    options.packageTop,
+    deployDirectory: options.deployDir,
+    minConstraints: minConstraints,
+    requiredDependencies: requiredDependencies,
+    updatePackageJson: updatePackageJson,
+    force: force,
+    verbose: verbose,
+  );
 
   /// Upgrades `firebase-functions` in the generated functions package.
   Future<void> npmUpgrade() async {
