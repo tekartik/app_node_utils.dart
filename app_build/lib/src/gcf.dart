@@ -196,11 +196,14 @@ Future gcfNodePackageServe(
 }
 
 /// Deploy functions.
+///
+/// [force] adds `--force` (see [gcfNodePackageDeployFunctionsCommand]).
 Future<void> gcfNodePackageDeployFunctions(
   String path, {
   String deployDirectory = 'deploy',
   String? projectId,
   List<String>? functions,
+  bool? force,
 }) async {
   var shell = Shell(workingDirectory: join(path, deployDirectory));
 
@@ -209,6 +212,7 @@ Future<void> gcfNodePackageDeployFunctions(
       deployDirectory: deployDirectory,
       projectId: projectId,
       functions: functions,
+      force: force,
     ),
   );
 }
@@ -373,19 +377,29 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
   }
 
   /// Builds the package and deploys the configured functions.
-  Future<void> buildAndDeployFunctions({List<String>? functions}) async {
+  ///
+  /// [force] adds `--force` to the deploy command (see
+  /// [gcfNodePackageDeployFunctionsCommand]).
+  Future<void> buildAndDeployFunctions({
+    List<String>? functions,
+    bool? force,
+  }) async {
     await build();
 
-    await deployFunctions(functions: functions);
+    await deployFunctions(functions: functions, force: force);
   }
 
   /// Deploys the configured functions with the Firebase CLI.
-  Future<void> deployFunctions({List<String>? functions}) async {
+  ///
+  /// [force] adds `--force`: the functions no longer in the deploy folder are
+  /// deleted and the runtime upgrade checks bypassed without confirmation.
+  Future<void> deployFunctions({List<String>? functions, bool? force}) async {
     await gcfNodePackageDeployFunctions(
       options.packageTop,
       projectId: options.projectId,
       deployDirectory: options.deployDir,
       functions: functions ?? options.functions,
+      force: force,
     );
   }
 

@@ -14,12 +14,17 @@ String gcfNodePackageServeFunctionsCommand({
 }
 
 /// Builds the Firebase deploy command used to deploy selected functions.
+///
+/// [force] adds `--force`: the functions no longer in the deploy folder are
+/// deleted and the runtime upgrade checks bypassed without confirmation.
 String gcfNodePackageDeployFunctionsCommand({
   String deployDirectory = 'deploy',
   String? projectId,
   List<String>? functions,
+  bool? force,
 }) {
-  return 'firebase${gcfNodePackageFirebaseArgProjectId(projectId)} deploy --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}';
+  return 'firebase${gcfNodePackageFirebaseArgProjectId(projectId)} deploy --only ${functions == null ? 'functions' : functions.map((e) => 'functions:$e').join(',')}'
+      '${force == true ? ' --force' : ''}';
 }
 
 /// Returns the optional Firebase CLI project argument.

@@ -43,6 +43,22 @@ void main() {
         ),
         'firebase deploy --only functions:function1,functions:function2',
       );
+      expect(
+        gcfNodePackageDeployFunctionsCommand(force: true),
+        'firebase deploy --only functions --force',
+      );
+      expect(
+        gcfNodePackageDeployFunctionsCommand(force: false),
+        'firebase deploy --only functions',
+      );
+      expect(
+        gcfNodePackageDeployFunctionsCommand(
+          projectId: 'my_prj',
+          functions: ['function1'],
+          force: true,
+        ),
+        'firebase --project my_prj deploy --only functions:function1 --force',
+      );
     });
   });
 }
