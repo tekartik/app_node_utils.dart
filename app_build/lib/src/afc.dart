@@ -1,9 +1,11 @@
 /// Aliyun function compute
 library;
 
+import 'package:path/path.dart';
 import 'package:process_run/shell_run.dart';
-import 'package:process_run/stdio.dart';
 import 'package:tekartik_app_node_build/src/run.dart';
+
+import 'deploy_copy.dart';
 
 /// Compile bin/main.dart to deploy/functions/index.js
 Future afcNodeBuild({
@@ -28,20 +30,10 @@ Future afcNodeCopyToDeploy({
   String directory = 'bin',
   String deployDirectory = 'deploy',
 }) async {
-  var src = File('build/$directory/main.dart.js');
-
-  Future copy() async {
-    var file = await src.copy('$deployDirectory/index.js');
-    stdout.writeln('copied to $file ${file.statSync()}');
-  }
-
-  try {
-    await copy();
-  } catch (e) {
-    await Directory(deployDirectory).create(recursive: true);
-
-    await copy();
-  }
+  await copyCompiledJsToDeploy(
+    join('build', directory, 'main.dart.js'),
+    join(deployDirectory, 'index.js'),
+  );
 }
 
 /// Result returned by an AFC deploy operation.
@@ -57,7 +49,7 @@ class AfcDeployResult {
 Future<AfcDeployResult> afcNodeDeploy({
   String deployDirectory = 'deploy',
 }) async {
-  var shell = Shell(workingDirectory: 'deploy');
+  var shell = Shell(workingDirectory: deployDirectory);
   var lines = (await shell.run('fun deploy')).outLines;
   String? foundUrl;
   // Extract from 'url: https://xxxxx.eu-central-1.fc.aliyuncs.com/xxxxxx/'

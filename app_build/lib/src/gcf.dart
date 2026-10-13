@@ -7,6 +7,7 @@ import 'package:tekartik_app_node_build/app_build.dart';
 import 'package:tekartik_app_node_build/gcf_build.dart';
 import 'package:tekartik_common_utils/common_utils_import.dart';
 
+import 'deploy_copy.dart';
 import 'gcf_common.dart';
 
 /// Compile bin/main.dart to deploy/functions/index.js
@@ -177,7 +178,7 @@ Future gcfNodePackageNpmUpgradeFirebaseAdmin(
 
 /// Serves the current package with the Firebase CLI.
 Future gcfNodeServe({String directory = 'deploy', String? projectId}) async {
-  await gcfNodePackageServe('.', directory: directory);
+  await gcfNodePackageServe('.', directory: directory, projectId: projectId);
 }
 
 /// Serves a built package with the Firebase CLI.
@@ -187,7 +188,7 @@ Future gcfNodePackageServe(
   String? projectId,
   int? port,
 }) async {
-  await gcfNodePackageNpmInstall(path);
+  await gcfNodePackageNpmInstall(path, deployDirectory: directory);
   var shell = Shell(workingDirectory: join(path, directory));
   await shell.run(
     'firebase serve${gcfNodePackageFirebaseArgProjectId(projectId)}'
@@ -266,21 +267,10 @@ Future gcfNodePackageCopyToDeploy(
   String deployDirectory = 'deploy',
   String? jsSrcFile,
 }) async {
-  var src = File(join(path, 'build', directory, jsSrcFile ?? 'main.dart.js'));
-  var dstDir = join(path, deployDirectory, 'functions');
-
-  Future copy() async {
-    var file = await src.copy(join(dstDir, 'index.js'));
-    stdout.writeln('copied to $file ${file.statSync()}');
-  }
-
-  try {
-    await copy();
-  } catch (e) {
-    await Directory(dstDir).create(recursive: true);
-
-    await copy();
-  }
+  await copyCompiledJsToDeploy(
+    join(path, 'build', directory, jsSrcFile ?? 'main.dart.js'),
+    join(path, deployDirectory, 'functions', 'index.js'),
+  );
 }
 
 /// Returns the default Firebase project id from the environment.
@@ -323,12 +313,14 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
     );
   }
 
-  /// Copies the compiled output to the deploy directory.
+  /// Copies the compiled output (of [GcfNodeAppOptions.srcFile], default
+  /// main.dart) to the deploy directory.
   Future<void> copyToDeploy() async {
     await gcfNodePackageCopyToDeploy(
       options.packageTop,
       directory: options.srcDir,
       deployDirectory: options.deployDir,
+      jsSrcFile: '${basename(options.srcFile ?? 'main.dart')}.js',
     );
   }
 
@@ -371,9 +363,13 @@ class GcfNodeAppBuilder implements CommonAppBuilder {
     await serveFunctions(functions: functions);
   }
 
-  /// Removes generated build and deploy artifacts.
+  /// Removes generated build and deploy artifacts (build and
+  /// `<deployDir>/functions/index.js`).
   Future<void> clean() async {
-    await nodePackageClean(options.packageTop);
+    await nodePackageClean(
+      options.packageTop,
+      deployDirectory: join(options.deployDir, 'functions'),
+    );
   }
 
   /// Builds the package and deploys the configured functions.

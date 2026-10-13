@@ -6,6 +6,8 @@ import 'package:process_run/stdio.dart';
 //import 'package:dev_build/utils/shell_run.dart';
 import 'package:tekartik_app_node_build/app_build.dart';
 
+import 'deploy_copy.dart';
+
 /// Deprecated legacy build entrypoint.
 @Deprecated('Use [nodePackageBuild] instead')
 Future build({String directory = 'bin'}) async {
@@ -48,15 +50,16 @@ node ${shellArgument(join(deployDirectory, '${basename ?? 'index'}.js'))}
   ''');
 }
 
-/// Clean node app
+/// Clean node app: deletes `<path>/build` and `<path>/<deployDirectory>/index.js`
 Future nodePackageClean(String path, {String? deployDirectory}) async {
   deployDirectory ??= 'deploy';
-  stdout.writeln('deleting "build"');
+  var buildDir = join(path, 'build');
+  stdout.writeln('deleting "$buildDir"');
   try {
-    await Directory('build').delete(recursive: true);
+    await Directory(buildDir).delete(recursive: true);
   } catch (_) {}
 
-  var indexJs = join(deployDirectory, 'index.js');
+  var indexJs = join(path, deployDirectory, 'index.js');
   stderr.writeln('deleting "$indexJs"');
   try {
     await File(indexJs).delete();
@@ -66,6 +69,8 @@ Future nodePackageClean(String path, {String? deployDirectory}) async {
 /// Copy main.dart.js to index.js
 ///
 /// if basename is specified copy `<basename>.dart.js` to `deploy/<basename>.js`
+///
+/// Paths are relative to [path].
 Future nodePackageCopyToDeploy(
   String path, {
   String? directory,
@@ -74,20 +79,10 @@ Future nodePackageCopyToDeploy(
 }) async {
   directory ??= 'bin';
   deployDirectory ??= 'deploy';
-  var src = File('build/$directory/${basename ?? 'main'}.dart.js');
-
-  Future copy() async {
-    var file = await src.copy('$deployDirectory/${basename ?? 'index'}.js');
-    stdout.writeln('copied to $file ${file.statSync()}');
-  }
-
-  try {
-    await copy();
-  } catch (e) {
-    await Directory(deployDirectory).create(recursive: true);
-
-    await copy();
-  }
+  await copyCompiledJsToDeploy(
+    join(path, 'build', directory, '${basename ?? 'main'}.dart.js'),
+    join(path, deployDirectory, '${basename ?? 'index'}.js'),
+  );
 }
 
 /// New builder helper
@@ -175,6 +170,9 @@ class NodeAppBuilder {
 
   /// Removes generated build and deploy artifacts.
   Future<void> clean() async {
-    await nodePackageClean(options.packageTop);
+    await nodePackageClean(
+      options.packageTop,
+      deployDirectory: options.deployDir,
+    );
   }
 }

@@ -43,7 +43,7 @@ void gcfMenuAppBuilderContent({required GcfNodeAppBuilder builder}) {
     });
 
     item('npm upgrade firebase-admin', () async {
-      await builder.npmUpgrade();
+      await builder.npmUpgradeFirebaseAdmin();
     });
   });
 
